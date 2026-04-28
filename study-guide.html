@@ -2,18 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Personalized Economics Study Guide | All Modules</title>
-  <!-- Chart.js CDN for interactive graphs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha256-vsCjbrXN1fkxWZSxrLxbxJHj6P9yGjXKXqE1FkI0Fc=" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macroeconomics Study Guide | Full Models + Policy Chains</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
       background: #f5f7fb;
       color: #1e293b;
       line-height: 1.6;
@@ -38,14 +32,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 0.25rem;
     }
     .subtitle {
       font-size: 1.2rem;
       color: #475569;
       border-left: 5px solid #2c5f8a;
       padding-left: 1.2rem;
-      margin-bottom: 2.8rem;
+      margin: 0.5rem 0 2.5rem;
       font-weight: 500;
     }
     h2 {
@@ -61,9 +54,6 @@
       font-size: 1.4rem;
       color: #1e405b;
       margin: 1.8rem 0 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
     .definition-grid {
       display: grid;
@@ -77,30 +67,12 @@
       border-radius: 1.5rem;
       padding: 1.5rem 1.3rem;
       box-shadow: 0 8px 20px rgba(0,0,0,0.02);
-      transition: 0.2s ease;
+      transition: 0.2s;
     }
-    .card:hover {
-      box-shadow: 0 14px 28px rgba(0, 20, 40, 0.08);
-      border-color: #9bb7d4;
-    }
-    .term {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #0a3147;
-      margin-bottom: 0.5rem;
-    }
-    .definition {
-      color: #334155;
-      margin-bottom: 0.5rem;
-    }
-    .example {
-      background: #eef4ff;
-      border-radius: 1rem;
-      padding: 0.7rem 1rem;
-      font-style: italic;
-      color: #1e3a5f;
-      margin-top: 0.7rem;
-    }
+    .card:hover { box-shadow: 0 14px 28px rgba(0,20,40,0.08); border-color:#9bb7d4; }
+    .term { font-size:1.3rem; font-weight:700; color:#0a3147; margin-bottom:0.5rem; }
+    .definition { color:#334155; margin-bottom:0.5rem; }
+    .example { background:#eef4ff; border-radius:1rem; padding:0.7rem 1rem; font-style:italic; color:#1e3a5f; margin-top:0.7rem; }
     .graph-box {
       background: #f8fafc;
       border-radius: 1.8rem;
@@ -108,505 +80,1082 @@
       margin: 1.8rem 0;
       border: 1px solid #dce3eb;
     }
-    canvas {
-      width: 100%;
-      height: auto;
-      max-height: 400px;
-      background: white;
-      border-radius: 1rem;
-    }
-    .manipulate-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin: 1rem 0 0.3rem;
-    }
+    canvas { width:100% !important; height:auto !important; max-height:380px; background:white; border-radius:1rem; display:block; }
+    .manipulate-bar { display:flex; flex-wrap:wrap; gap:0.6rem; margin:1rem 0 0.3rem; }
     .btn {
-      background: #2563eb;
-      border: none;
-      color: white;
+      background:#2563eb; border:none; color:white; font-weight:600;
+      padding:0.5rem 1.2rem; border-radius:2.5rem; font-size:0.85rem;
+      cursor:pointer; transition:0.2s; box-shadow:0 4px 8px rgba(37,99,235,0.2);
+      white-space: nowrap;
+    }
+    .btn:hover { background:#1d4ed8; }
+    .btn.reset { background:#475569; }
+    .btn.reset:hover { background:#334155; }
+    .btn.warn { background:#e67e22; }
+    .btn.warn:hover { background:#d35400; }
+    .btn.growth { background:#8e44ad; }
+    .btn.growth:hover { background:#6c3483; }
+    .btn.info { background:#2980b9; }
+    .btn.info:hover { background:#1c5980; }
+    .btn.success { background:#27ae60; }
+    .btn.success:hover { background:#1e8449; }
+    .btn.stabilizer { background:#6366f1; }
+    .btn.stabilizer:hover { background:#4f46e5; }
+    .label-desc { font-size:0.9rem; color:#475569; margin-top:0.6rem; }
+    .factor-display {
+      font-size: 0.9rem;
+      color: #2563eb;
       font-weight: 600;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2.5rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      box-shadow: 0 4px 8px rgba(37,99,235,0.2);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
+      margin-top: 0.4rem;
+      min-height: 1.4rem;
     }
-    .btn:hover {
-      background: #1d4ed8;
+    .exam-note {
+      font-size: 0.85rem;
+      color: #b45309;
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.6rem;
+      margin-top: 0.8rem;
     }
-    .btn.reset {
-      background: #475569;
-    }
-    .btn.reset:hover {
-      background: #334155;
-    }
-    .label-desc {
-      font-size: 0.9rem;
-      color: #475569;
-      margin-left: 0.5rem;
-    }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.8rem;
-      margin-top: 1rem;
-    }
-    .video-card {
-      background: #f1f5f9;
-      border-radius: 1.5rem;
-      padding: 1rem;
-      transition: 0.2s;
-    }
-    .video-card iframe {
-      width: 100%;
-      height: 190px;
-      border-radius: 1rem;
-      border: none;
-    }
-    .ai-block {
-      background: #f1f5f9;
-      border-radius: 1.5rem;
-      padding: 1.3rem 1.5rem;
-      margin: 1.3rem 0;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.9rem;
-    }
-    .citation {
-      background: #f8fafc;
+    .chain-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
       border-radius: 1.2rem;
       padding: 1.2rem;
-      margin: 1.2rem 0;
-      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    .chain-arrows {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e405b;
       word-break: break-word;
     }
-    hr {
-      margin: 2rem 0 1rem;
-      border: 1px dashed #cbd5e1;
+    .video-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.8rem; margin-top:1rem; }
+    .video-card { background:#f1f5f9; border-radius:1.5rem; padding:1rem; }
+    .video-card a { font-weight:600; color:#2563eb; text-decoration:none; }
+    .video-card a:hover { text-decoration:underline; }
+    .note { background:#fef9c3; border-left:4px solid #eab308; padding:0.8rem 1rem; border-radius:0.8rem; margin:1rem 0; font-size:0.95rem; }
+    .summary-box {
+      background: #f0f9ff;
+      border: 2px solid #bae6fd;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin: 1.8rem 0;
     }
-    @media (max-width: 650px) {
-      body {
-        padding: 1rem 0.5rem;
-      }
-      .container {
-        padding: 1.8rem 1rem;
-      }
+    .summary-box ul { list-style-type: disc; padding-left: 1.5rem; }
+    .summary-box li { margin-bottom: 0.5rem; }
+    details {
+      margin-top: 1rem;
+      background: #f1f5f9;
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+    }
+    details summary {
+      font-weight: 700;
+      color: #1e405b;
+      cursor: pointer;
+      outline: none;
+    }
+    details .detail-content {
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+    .section-divider {
+      margin: 3rem 0 2rem;
+      border-top: 4px solid #cbd5e1;
+      text-align: center;
+      position: relative;
+    }
+    .section-divider span {
+      background: white;
+      padding: 0 1rem;
+      color: #475569;
+      font-weight: 700;
+      position: relative;
+      top: -0.8rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>📘 Personalized Economics Study Guide</h1>
-    <div class="subtitle">Covers core micro & macro modules · graphs, summaries, AI augmentation & MLA citations</div>
+<div class="container">
+  <h1>📈 Macroeconomics Study Guide</h1>
+  <div class="subtitle">AD-AS · Loanable Funds · Phillips Curve · Reserve Market · PPF · Policy Chains · Automatic Stabilizers</div>
 
-    <!-- ============= KEY TERMS SECTION ============= -->
-    <h2>🔑 Definitions of Key Terms</h2>
-    <p style="color:#334155; margin-bottom:0.5rem;"><strong>All key terms from each module are included, defined in my own words, with correct, relevant, specific examples.</strong></p>
-    <div class="definition-grid">
-      <div class="card">
-        <div class="term">Scarcity</div>
-        <div class="definition">The fundamental economic problem: unlimited wants exceed limited resources. It forces individuals and societies to make choices about how to allocate resources.</div>
-        <div class="example"><strong>Example:</strong> A government has only $50 billion for both healthcare and infrastructure; choosing more hospitals means fewer highways.</div>
-      </div>
-      <div class="card">
-        <div class="term">Opportunity Cost</div>
-        <div class="definition">The value of the next-best alternative that must be given up when a decision is made. It represents the true cost of any choice.</div>
-        <div class="example"><strong>Example:</strong> If you spend an hour studying economics instead of working a $15/hour job, the opportunity cost is $15 and the lost experience.</div>
-      </div>
-      <div class="card">
-        <div class="term">Demand</div>
-        <div class="definition">The relationship between the price of a good and the quantity consumers are willing and able to purchase, holding other factors constant. Generally slopes downward.</div>
-        <div class="example"><strong>Example:</strong> At $3 per coffee, a student buys 2 cups per day; when price rises to $5, she buys only 1 cup.</div>
-      </div>
-      <div class="card">
-        <div class="term">Supply</div>
-        <div class="definition">The relationship showing how much producers are willing to sell at different prices, typically upward sloping due to profit incentives.</div>
-        <div class="example"><strong>Example:</strong> Coffee shops are willing to supply 500 cups daily at $4, but at $6 they increase quantity supplied to 700 cups.</div>
-      </div>
-      <div class="card">
-        <div class="term">Equilibrium</div>
-        <div class="definition">The price-quantity pair where quantity demanded equals quantity supplied, resulting in no inherent tendency for change.</div>
-        <div class="example"><strong>Example:</strong> In a local pizza market, equilibrium occurs at $12 per pizza with 200 pizzas sold per night.</div>
-      </div>
-      <div class="card">
-        <div class="term">Price Elasticity of Demand (PED)</div>
-        <div class="definition">Measures how responsive quantity demanded is to a change in price. Elastic (>1) means consumers are sensitive; inelastic (<1) means less sensitive.</div>
-        <div class="example"><strong>Example:</strong> Luxury cruises have elastic demand (price rise → big drop in bookings); insulin has inelastic demand (price change barely affects quantity).</div>
-      </div>
-      <div class="card">
-        <div class="term">Government Intervention</div>
-        <div class="definition">Actions by authorities to correct market failures or achieve equity, e.g., price ceilings, floors, taxes, or subsidies.</div>
-        <div class="example"><strong>Example:</strong> Rent control sets a maximum price below equilibrium, causing a shortage of rental apartments.</div>
-      </div>
-      <div class="card">
-        <div class="term">Income Inequality</div>
-        <div class="definition">The unequal distribution of income across a population, often visualized by the Lorenz curve and measured by the Gini coefficient.</div>
-        <div class="example"><strong>Example:</strong> A country where the top 20% earn 55% of total income shows high inequality (Gini ≈ 0.48).</div>
-      </div>
-      <div class="card">
-        <div class="term">Profit Maximization</div>
-        <div class="definition">The rule that firms produce where marginal cost (MC) equals marginal revenue (MR), the output level that yields the highest economic profit.</div>
-        <div class="example"><strong>Example:</strong> A smartphone manufacturer finds that producing the 10,000th unit costs $400 (MC) and brings $400 revenue (MR), so it stops at 10,000 units.</div>
-      </div>
-    </div>
-    <p style="margin-top:0.8rem;"><span style="font-weight:700;">Quantity:</span> All necessary terms from each module appear above. <span style="font-weight:700;">Accuracy:</span> Each definition is correct and written in my own words. <span style="font-weight:700;">Examples:</span> Every term includes a specific, relevant example.</p>
-
-    <!-- ============= SUMMARIES SECTION ============= -->
-    <h2>📋 Summaries of Key Concepts</h2>
-    <p style="color:#1e293b;"><strong>Accurate, concise summaries using key terms, describing similarities/differences, written in full sentences in my own words.</strong></p>
-    <div style="display:flex; flex-direction: column; gap:1.5rem; margin-top:1.2rem;">
-      <div style="background:#f9fafc; border-radius:1.2rem; padding:1.2rem 1.5rem;">
-        <strong>Scarcity & Opportunity Cost</strong><br>
-        Scarcity is the universal condition of limited resources versus infinite wants, which forces choice. Opportunity cost is the direct consequence of scarcity: the value of the foregone alternative. While scarcity describes the <em>existence</em> of constraints, opportunity cost <em>quantifies</em> the trade-off. Both concepts are foundational and differ in that scarcity is a state, whereas opportunity cost is a measured sacrifice.
-      </div>
-      <div style="background:#f9fafc; border-radius:1.2rem; padding:1.2rem 1.5rem;">
-        <strong>Government Interventions & Market Equilibrium</strong><br>
-        Government interventions like price ceilings and price floors disrupt the free-market equilibrium intentionally to achieve social goals. A price ceiling (e.g., rent control) sets a maximum price below equilibrium, creating a persistent shortage. A price floor (e.g., minimum wage) sets a minimum price above equilibrium, leading to surplus. Both differ from laissez-faire equilibrium but share the limitation of potential deadweight loss. They are similar in that they legally fix prices, yet differ in their directional impact.
-      </div>
-      <div style="background:#f9fafc; border-radius:1.2rem; padding:1.2rem 1.5rem;">
-        <strong>Income Inequality & Lorenz Curve</strong><br>
-        Income inequality measures how unevenly earnings are spread across a population. The Lorenz curve graphically represents this distribution; the further it bows from the line of perfect equality, the greater the inequality. The Gini coefficient summarizes inequality as a number between 0 and 1. Compared to poverty, which focuses on absolute deprivation, inequality is a relative concept. This concept connects to government redistribution policies.
-      </div>
-      <div style="background:#f9fafc; border-radius:1.2rem; padding:1.2rem 1.5rem;">
-        <strong>Profit Maximization (MC = MR)</strong><br>
-        Firms maximize profit by producing the quantity where marginal cost equals marginal revenue. This principle applies across perfect competition and monopoly, though the resulting price and efficiency differ. In perfect competition, MR = price, so the firm produces where P = MC, achieving allocative efficiency. A monopolist’s MR lies below demand, leading to higher prices and lower output. The similarity is the MC=MR rule; the difference is the market power that shifts outcomes.
-      </div>
-    </div>
-
-    <!-- ============= GRAPHS / MODELS ============= -->
-    <h2>📈 Graphs & Models (Interactive Manipulation)</h2>
-    <p><strong>All graphs are accurate, fully labelled (axes, curves, intersecting points), and include clear examples of manipulation.</strong></p>
-
-    <!-- Graph 1: PPF -->
-    <div class="graph-box">
-      <h3>🌾 Production Possibilities Frontier (Scarcity & Opportunity Cost)</h3>
-      <canvas id="ppfChart" width="500" height="280"></canvas>
-      <div class="manipulate-bar">
-        <button class="btn" id="ppfGrowth">🚀 Technological Growth (Shift Outward)</button>
-        <button class="btn reset" id="ppfReset">↺ Reset</button>
-      </div>
-      <p class="label-desc">Axes: Capital Goods vs Consumer Goods. Curve shows trade-off. Point inside = inefficient; point on curve = efficient. Shift simulates economic growth.</p>
-    </div>
-
-    <!-- Graph 2: Supply & Demand Equilibrium -->
-    <div class="graph-box">
-      <h3>⚖️ Supply & Demand (Equilibrium & Shifts)</h3>
-      <canvas id="sdChart" width="500" height="280"></canvas>
-      <div class="manipulate-bar">
-        <button class="btn" id="demandUp">📈 Increase Demand →</button>
-        <button class="btn" id="supplyUp">📉 Increase Supply →</button>
-        <button class="btn reset" id="sdReset">↺ Reset Equilibrium</button>
-      </div>
-      <p class="label-desc">Fully labelled: Price (P), Quantity (Q), Demand (D), Supply (S), equilibrium E. Changes clearly labelled.</p>
-    </div>
-
-    <!-- Graph 3: Price Ceiling (Government Intervention) -->
-    <div class="graph-box">
-      <h3>🏠 Price Ceiling (Rent Control) - Shortage</h3>
-      <canvas id="ceilingChart" width="500" height="280"></canvas>
-      <div class="manipulate-bar">
-        <button class="btn" id="applyCeiling">⬇️ Apply Binding Ceiling</button>
-        <button class="btn reset" id="ceilingReset">↺ Remove Ceiling</button>
-      </div>
-      <p class="label-desc">Binding price ceiling below equilibrium creates shortage (Qd > Qs). Shaded area illustrates shortage.</p>
-    </div>
-
-    <!-- Graph 4: Profit Maximization (MC & MR) -->
-    <div class="graph-box">
-      <h3>🏭 Profit Maximization (MC = MR)</h3>
-      <canvas id="profitChart" width="500" height="280"></canvas>
-      <div class="manipulate-bar">
-        <button class="btn" id="highlightProfit">💡 Highlight Profit Max Point</button>
-        <button class="btn reset" id="profitReset">↺ Reset</button>
-      </div>
-      <p class="label-desc">Marginal Cost (MC) and Marginal Revenue (MR). Intersection determines Q*. Fully labelled axes and curves.</p>
-    </div>
-
-    <!-- Graph 5: Lorenz Curve -->
-    <div class="graph-box">
-      <h3>📊 Lorenz Curve & Income Inequality</h3>
-      <canvas id="lorenzChart" width="500" height="280"></canvas>
-      <div class="manipulate-bar">
-        <button class="btn" id="moreInequality">📉 More Inequality</button>
-        <button class="btn reset" id="lorenzReset">↺ Default Inequality</button>
-      </div>
-      <p class="label-desc">Line of perfect equality vs actual Lorenz curve. Further bow means higher Gini coefficient.</p>
-    </div>
-
-    <!-- ============= VIDEOS SECTION ============= -->
-    <h2>🎥 Videos for All Topics</h2>
-    <div class="video-grid">
-      <div class="video-card">
-        <strong>Scarcity & Opportunity Cost</strong>
-        <iframe src="https://www.youtube-nocookie.com/embed/0oF1D3zqFwc" title="Scarcity and Opportunity Cost" allowfullscreen></iframe>
-        <p style="font-size:0.8rem; margin:0.3rem 0;">Khan Academy</p>
-      </div>
-      <div class="video-card">
-        <strong>Supply & Demand</strong>
-        <iframe src="https://www.youtube-nocookie.com/embed/g9aNj0Dyxjc" title="Supply and Demand" allowfullscreen></iframe>
-        <p style="font-size:0.8rem; margin:0.3rem 0;">CrashCourse Economics</p>
-      </div>
-      <div class="video-card">
-        <strong>Government Intervention</strong>
-        <iframe src="https://www.youtube-nocookie.com/embed/1iXjZYFQXts" title="Price Ceilings and Floors" allowfullscreen></iframe>
-        <p style="font-size:0.8rem; margin:0.3rem 0;">Jacob Clifford (ACDC Econ)</p>
-      </div>
-      <div class="video-card">
-        <strong>Income Inequality</strong>
-        <iframe src="https://www.youtube-nocookie.com/embed/fGkMx0x2ZLg" title="Income Inequality and Lorenz Curve" allowfullscreen></iframe>
-        <p style="font-size:0.8rem; margin:0.3rem 0;">EconplusDal</p>
-      </div>
-      <div class="video-card">
-        <strong>Profit Maximization</strong>
-        <iframe src="https://www.youtube-nocookie.com/embed/61GCogC4HUE" title="Profit Maximization" allowfullscreen></iframe>
-        <p style="font-size:0.8rem; margin:0.3rem 0;">Marginal Revolution University</p>
-      </div>
-    </div>
-    <p style="margin-top:0.8rem;">Videos are placed logically next to relevant concepts and explain them clearly.</p>
-
-    <!-- ============= AI TOOLS USAGE ============= -->
-    <h2>🤖 AI Tools & Responsible Use</h2>
-    <p><strong>Two or more AI tools used to enhance quality/quantity. Prompts are responsible; all AI content edited by human effort.</strong></p>
-    <div class="ai-block">
-      <strong>Tool 1: ChatGPT (OpenAI) – used for refining definitions & examples</strong><br>
-      <em>Prompt:</em> “Explain the concept of price elasticity of demand in simple terms with a real-world example, and keep it suitable for a high school economics study guide.”<br>
-      <em>AI response excerpt:</em> “Price elasticity of demand measures how much the quantity demanded changes when price changes. For example, if the price of movie tickets rises 10% and attendance drops 20%, demand is elastic.”<br>
-      <em>Human edit:</em> I rewrote the definition using my own vocabulary, added the insulin vs cruise example, and verified the numerical ratio.
-    </div>
-    <div class="ai-block">
-      <strong>Tool 2: Perplexity AI – used to gather data for Lorenz curve and MLA format verification</strong><br>
-      <em>Prompt:</em> “Provide typical income distribution quintile shares for a country with moderate inequality, and suggest MLA citation for a principles of economics textbook.”<br>
-      <em>AI response:</em> Suggested quintile shares (20%, 10%, 8%, 7%, 55%) and MLA template for Mankiw.<br>
-      <em>Human edit:</em> I cross-checked data with World Bank estimates, adjusted numbers for pedagogical clarity, and formatted the MLA citation manually.
-    </div>
-    <p>Both AI tools were used ethically; all outputs were reviewed, fact-checked, and substantially edited by me.</p>
-
-    <!-- ============= MLA CITATIONS ============= -->
-    <h2>📚 MLA Citations</h2>
-    <div class="citation">
-      <p><strong>Works Cited</strong></p>
-      <p>Mankiw, N. Gregory. <em>Principles of Economics</em>. 9th ed., Cengage Learning, 2021.</p>
-      <p>Krugman, Paul, and Robin Wells. <em>Economics</em>. 6th ed., Worth Publishers, 2021.</p>
-      <p>“Supply and Demand.” <em>Khan Academy</em>, www.khanacademy.org/economics-finance-domain/ap-macroeconomics/basic-economics-concepts-ap/supply-demand/v/supply-and-demand. Accessed 28 Apr. 2026.</p>
-      <p>“Price Ceilings and Price Floors.” <em>YouTube</em>, uploaded by Jacob Clifford, 3 Jan. 2015, www.youtube.com/watch?v=1iXjZYFQXts.</p>
-      <p>“Lorenz Curve and Gini Coefficient.” <em>EconplusDal</em>, uploaded by EconplusDal, 12 May 2016, www.youtube.com/watch?v=fGkMx0x2ZLg.</p>
-      <p>OpenAI. “ChatGPT Response to price elasticity explanation.” <em>ChatGPT</em>, 28 Apr. 2026, chat.openai.com/chat.</p>
-      <p>Perplexity AI. “Income distribution and MLA template query.” <em>Perplexity</em>, 28 Apr. 2026, www.perplexity.ai.</p>
-      <p>“Economics Study Guide Rubric.” Provided by instructor, 2026.</p>
-    </div>
-    <p style="margin-top:0.5rem; font-style:italic;">All sources—AI, websites, books, and slides—are accurately cited in MLA format with no errors.</p>
-    <hr>
-    <p style="text-align:right; color:#475569;">Personalized Study Guide · Completed with all project requirements · April 2026</p>
+  <!-- ====== OVERALL TAKEAWAYS ====== -->
+  <h2>📝 Overall Unit Takeaways</h2>
+  <div class="summary-box">
+    <ul>
+      <li><strong>GDP</strong> measures total output; real GDP adjusts for inflation. Long‑run growth depends on resources, technology, and institutions.</li>
+      <li><strong>Unemployment</strong> has frictional, structural, and cyclical components. The natural rate (NAIRU) exists even at full employment.</li>
+      <li><strong>Inflation</strong> is a sustained increase in the price level. Demand‑pull vs. cost‑push inflation.</li>
+      <li><strong>AD</strong> slopes downward (wealth, interest‑rate, exchange‑rate effects). Shifts from C, I, G, NX.</li>
+      <li><strong>SRAS</strong> is upward sloping (sticky wages). Shifts from input prices, productivity, supply shocks.</li>
+      <li><strong>LRAS</strong> is vertical at potential output. Growth shifts LRAS, SRAS, AD right.</li>
+      <li><strong>Fiscal policy</strong> directly affects AD. <strong>Automatic stabilizers</strong> reduce cycle amplitude.</li>
+      <li><strong>Monetary policy</strong> works through money market → interest rates → AD.</li>
+      <li><strong>Phillips Curve</strong>: short‑run trade‑off, long‑run vertical.</li>
+      <li><strong>Loanable funds</strong>: saving = supply, investment = demand; deficits raise rates, crowd out.</li>
+      <li><strong>Reserve market</strong>: scarce → OMO; ample → administered rates (IORB).</li>
+      <li><strong>Policy chains</strong> illustrate gaps, policy actions, and long‑run self‑correction.</li>
+    </ul>
   </div>
 
-  <!-- JavaScript for interactive charts -->
-  <script>
-    (function() {
-      // ----- PPF Chart -----
-      const ppfCtx = document.getElementById('ppfChart').getContext('2d');
-      const ppfDataDefault = {
-        labels: ['0', '20', '40', '60', '80', '100'],
-        datasets: [{
-          label: 'PPF (Consumer vs Capital Goods)',
-          data: [100, 95, 82, 60, 30, 0],
-          borderColor: '#1e4b6b',
-          backgroundColor: 'rgba(30,75,107,0.05)',
-          tension: 0.2,
-          pointBackgroundColor: '#0f2b4b',
-          fill: false
-        }]
-      };
-      let ppfChart = new Chart(ppfCtx, {
-        type: 'line',
-        data: ppfDataDefault,
-        options: {
-          responsive: true,
-          plugins: {
-            title: { display: true, text: 'PPF: Capital Goods vs Consumer Goods' }
-          },
-          scales: {
-            x: { title: { display: true, text: 'Consumer Goods (units)' } },
-            y: { title: { display: true, text: 'Capital Goods (units)' }, beginAtZero: true, max: 110 }
-          }
-        }
-      });
-      document.getElementById('ppfGrowth').addEventListener('click', () => {
-        ppfChart.data.datasets[0].data = [100, 98, 88, 72, 44, 10]; // outward shift
-        ppfChart.update();
-      });
-      document.getElementById('ppfReset').addEventListener('click', () => {
-        ppfChart.data.datasets[0].data = [100, 95, 82, 60, 30, 0];
-        ppfChart.update();
-      });
 
-      // ----- Supply & Demand Chart -----
-      const sdCtx = document.getElementById('sdChart').getContext('2d');
-      const sdBase = {
-        demand: [
-          {x: 10, y: 20}, {x: 20, y: 18}, {x: 30, y: 16}, {x: 40, y: 14}, {x: 50, y: 12}, {x: 60, y: 10}
-        ],
-        supply: [
-          {x: 10, y: 10}, {x: 20, y: 12}, {x: 30, y: 14}, {x: 40, y: 16}, {x: 50, y: 18}, {x: 60, y: 20}
-        ]
-      };
-      function createSDChart(demandData, supplyData) {
-        return new Chart(sdCtx, {
-          type: 'scatter',
-          data: {
-            datasets: [
-              {
-                label: 'Demand (D)',
-                data: demandData,
-                showLine: true,
-                borderColor: '#b22222',
-                backgroundColor: 'transparent',
-                pointRadius: 3,
-                tension: 0.1
-              },
-              {
-                label: 'Supply (S)',
-                data: supplyData,
-                showLine: true,
-                borderColor: '#2e6b2e',
-                backgroundColor: 'transparent',
-                pointRadius: 3,
-                tension: 0.1
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              x: { title: { display: true, text: 'Quantity (Q)' }, min: 0, max: 70 },
-              y: { title: { display: true, text: 'Price (P)' }, min: 5, max: 25 }
-            },
-            plugins: {
-              annotation: false,
-              tooltip: { mode: 'index' }
-            }
-          }
-        });
+
+
+
+
+
+
+<!-- ========== AP UNIT-BY-UNIT SUMMARY (UNITS 1–3) ========== -->
+<h2>📘 AP Macroeconomics Unit-by-Unit Summary (Units 1–3)</h2>
+
+<details open>
+  <summary>Unit 1: Basic Economic Concepts (5%–10%)</summary>
+  <div class="detail-content">
+    <p><strong>1.1 Scarcity</strong><br>
+    Economics begins with the fundamental problem of <em>scarcity</em>: unlimited wants but limited resources. This forces individuals, firms, and governments to make choices, and every choice involves an <strong>opportunity cost</strong>—the value of the next-best alternative foregone. Scarcity is permanent; it is not the same as a shortage (which is temporary and occurs when price is below equilibrium). Because of scarcity, all societies must answer three basic questions: <em>What</em> to produce? <em>How</em> to produce? <em>For whom</em> to produce?</p>
+    
+    <p><strong>1.2 Opportunity Cost and the Production Possibilities Curve (PPC)</strong><br>
+    The PPC is a model that shows the maximum combinations of two goods an economy can produce given full employment and productive efficiency. 
+    <br>• <em>Points on the curve</em> are productively efficient. 
+    <br>• <em>Points inside</em> are inefficient (unemployment, underemployment). 
+    <br>• <em>Points outside</em> are unattainable with current resources. 
+    <br>• The <strong>slope</strong> of the PPC measures the opportunity cost of one good in terms of the other. A <strong>concave (bowed‑out) shape</strong> indicates <em>increasing opportunity cost</em>—as more of one good is produced, resources become less adaptable. 
+    <br>• <strong>Shifts</strong> of the PPC outward represent economic growth (more resources, better technology, improved human capital). An inward shift represents destruction of resources. 
+    <br>• <strong>Rotations</strong> can occur if there is a change in technology or resources specific to one good. Example: if a new machine improves only wheat production, the PPC rotates outward along the wheat axis. 
+    <br>• <strong>Economic growth vs. efficiency</strong>: a point inside moving to a point on the curve is not growth, just better utilization of existing resources. Only outward shifts represent growth. 
+    <br>• Distinguish between <strong>capital goods</strong> (future production) and <strong>consumer goods</strong> (current satisfaction). Investment in capital goods today shifts the PPC outward tomorrow.</p>
+
+    <p><strong>1.3 Comparative Advantage and Gains from Trade</strong><br>
+    • <strong>Absolute advantage</strong>: the ability to produce more of a good with the same resources (or the same amount with fewer resources). 
+    <br>• <strong>Comparative advantage</strong>: the ability to produce a good at a lower opportunity cost. 
+    <br>• To determine comparative advantage, calculate opportunity costs for each producer. The producer with the lower opportunity cost for a good has the comparative advantage in that good. 
+    <br>• <strong>Input vs. output problems</strong>: In output tables (given how much each can produce), opportunity cost = sacrifice / gain. In input tables (hours to produce one unit), opportunity cost = hours to produce good A / hours to produce good B. 
+    <br>• <strong>Terms of trade</strong> must lie between the two opportunity costs for both parties to gain. Example: If Country A's OC of 1 car is 3 computers, and Country B's is 2 computers, then any exchange rate between 2 and 3 computers per car benefits both. 
+    <br>• <strong>Gains from trade</strong> exist even when one country has absolute advantage in both goods, as long as comparative advantages differ.</p>
+
+    <p><strong>1.4 Demand</strong><br>
+    • <strong>Law of Demand</strong>: as price increases, quantity demanded decreases (ceteris paribus). 
+    <br>• <strong>Determinants of demand</strong> (shifters): 
+    <br> - <em>Income</em>: normal goods (income↑ → demand↑), inferior goods (income↑ → demand↓). 
+    <br> - <em>Prices of related goods</em>: substitutes (price of one↑ → demand for other↑), complements (price of one↑ → demand for other↓). 
+    <br> - <em>Tastes and preferences</em>. 
+    <br> - <em>Expectations</em> of future prices or income. 
+    <br> - <em>Number of buyers</em>. 
+    <br>• A <strong>change in price</strong> causes a movement along the demand curve (change in quantity demanded). A change in any other determinant shifts the entire curve (change in demand).</p>
+
+    <p><strong>1.5 Supply</strong><br>
+    • <strong>Law of Supply</strong>: as price increases, quantity supplied increases. 
+    <br>• <strong>Determinants of supply</strong> (shifters): 
+    <br> - <em>Input/resource prices</em>: higher costs shift supply left. 
+    <br> - <em>Technology</em>: improvements shift supply right. 
+    <br> - <em>Taxes and subsidies</em>: taxes shift left; subsidies shift right. 
+    <br> - <em>Expectations</em> of future prices. 
+    <br> - <em>Number of sellers</em>. 
+    <br>• Same distinction: change in price → movement along curve (change in quantity supplied); change in other factors → shift of curve (change in supply).</p>
+
+    <p><strong>1.6 Market Equilibrium</strong><br>
+    • Equilibrium occurs where quantity demanded equals quantity supplied. 
+    <br>• At prices above equilibrium, a <strong>surplus</strong> (excess supply) → downward pressure on price. 
+    <br>• At prices below equilibrium, a <strong>shortage</strong> (excess demand) → upward pressure on price. 
+    <br>• <strong>Double shifts</strong>: when both supply and demand shift, the effect on either price or quantity may be ambiguous. Example: demand increases and supply decreases → price definitely rises, but quantity change depends on magnitudes. Practice: always draw two parallel graphs to visualize double shifts. 
+    <br>• <strong>Price floors and price ceilings</strong> (covered later in macro, but introduced here): binding price floor above equilibrium creates surplus; binding price ceiling below equilibrium creates shortage.</p>
+
+    <p><strong>Common exam mistakes:</strong> confusing movement along a curve with a shift; failing to distinguish absolute from comparative advantage; misreading PPC points; not recognizing that terms of trade must fall between opportunity costs.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Unit 2: Economic Indicators and the Business Cycle (12%–17%)</summary>
+  <div class="detail-content">
+    <p><strong>2.1 The Circular Flow and GDP</strong><br>
+    The circular flow model shows the interaction between households and firms in product and factor markets. 
+    <br>• <strong>Gross Domestic Product (GDP)</strong>: total market value of all <em>final</em> goods and services produced within a country in a given period (usually a year). 
+    <br>• <strong>Expenditure approach</strong>: GDP = C + I + G + (X – M) 
+    <br> C = personal consumption, I = gross private domestic investment (new capital, changes in inventories, new residential construction), G = government purchases (excludes transfer payments), X = exports, M = imports. 
+    <br>• <strong>Income approach</strong>: GDP = national income (wages + rent + interest + profit) + depreciation + indirect business taxes − subsidies + net factor income from abroad. 
+    <br>• <strong>Value‑added approach</strong>: sum of value added at each stage of production. 
+    <br>• <strong>What's not included</strong>: intermediate goods, used goods, purely financial transactions (stocks, bonds), transfer payments (social security, unemployment benefits), non-market activities (household work), underground economy, quality improvements, environmental degradation. 
+    <br>• <strong>GNP</strong> (Gross National Product): production by a country's citizens anywhere in the world. GDP measures production within borders; GNP includes income earned abroad and excludes income earned by foreigners domestically.</p>
+
+    <p><strong>2.2 Limitations of GDP</strong><br>
+    GDP is not a perfect measure of well‑being. It excludes leisure, non‑market transactions, environmental quality, and the distribution of income. Alternatives include the Human Development Index (HDI), Genuine Progress Indicator (GPI), and the inequality‑adjusted HDI. GDP per capita better reflects living standards, but still misses distribution.</p>
+
+    <p><strong>2.3 Unemployment</strong><br>
+    • <strong>Labor force</strong> = employed + unemployed (actively looking in the last 4 weeks). Discouraged workers (who gave up) are not in the labor force → unemployment rate may decline even if fewer people have jobs. 
+    <br>• <strong>Unemployment rate</strong> = (unemployed / labor force) × 100. 
+    <br>• <strong>Labor force participation rate</strong> = (labor force / working‑age population) × 100. 
+    <br>• <strong>Types of unemployment</strong>: 
+    <br> - <em>Frictional</em>: workers between jobs, searching; often short‑term, follows improved matches. 
+    <br> - <em>Structural</em>: mismatch between skills and job requirements; due to technological change, globalization, institutional changes. Longer‑term. 
+    <br> - <em>Cyclical</em>: caused by a downturn in the business cycle (deficient AD). 
+    <br>• <strong>Natural rate of unemployment (NAIRU)</strong> = frictional + structural. This is the rate when the economy is at potential output; not zero. 
+    <br>• Cyclical unemployment = actual unemployment – natural rate. In a recession, cyclical unemployment positive; in an inflationary gap, cyclical unemployment negative (unemployment below natural rate). 
+    <br>• Changes in natural rate due to demographics, technology, labor market policies, unemployment benefits, minimum wage.</p>
+
+    <p><strong>2.4 Price Indices and Inflation</strong><br>
+    • <strong>Consumer Price Index (CPI)</strong>: cost of a fixed market basket for a typical urban consumer. CPI = (cost in current year / cost in base year) × 100. 
+    <br>• <strong>Inflation rate</strong> = [(CPI new – CPI old) / CPI old] × 100. 
+    <br>• <strong>GDP deflator</strong> = (Nominal GDP / Real GDP) × 100. Includes all domestically produced goods, not just consumer goods. 
+    <br>• <strong>Producer Price Index (PPI)</strong>: measures prices at the wholesale level; often a leading indicator of CPI inflation. 
+    <br>• <strong>Biases in CPI</strong>: substitution bias (consumers change consumption when relative prices change), quality/new goods bias, outlet bias. CPI overstates inflation by about 0.5–1% per year. 
+    <br>• <strong>Real interest rate</strong> = nominal interest rate – inflation rate (≈ nominal – expected inflation).</p>
+
+    <p><strong>2.5 Costs of Inflation</strong><br>
+    • <strong>Shoe‑leather costs</strong>: increased transaction costs as people avoid holding money. 
+    <br>• <strong>Menu costs</strong>: costs of frequently changing prices. 
+    <br>• <strong>Unit‑of‑account costs</strong>: inflation makes money a less reliable measuring rod. 
+    <br>• <strong>Redistributive effects</strong>: unexpected inflation hurts lenders (repaid in devalued dollars), helps borrowers; harms fixed‑income earners. Expected inflation is built into contracts (Fisher effect). 
+    <br>• <strong>Hyperinflation</strong> (very high rates) can destroy a currency and the financial system.</p>
+
+    <p><strong>2.6 Real vs. Nominal GDP</strong><br>
+    • <strong>Nominal GDP</strong> measured in current prices; <strong>Real GDP</strong> adjusted for inflation using a base year. 
+    <br>• Real GDP = Nominal GDP / (GDP deflator / 100). 
+    <br>• Real GDP per capita = real GDP / population; used to measure standard of living over time. 
+    <br>• <strong>Rule of 70</strong>: approximate number of years to double = 70 / growth rate (%).</p>
+
+    <p><strong>2.7 Business Cycles</strong><br>
+    • Phases: peak, contraction (recession), trough, expansion. 
+    <br>• Recession: two consecutive quarters of declining real GDP. 
+    <br>• Key indicators: leading (stock prices, building permits, consumer expectations), coincident (employment, personal income, industrial production), lagging (average duration of unemployment, outstanding commercial loans). 
+    <br>• <strong>Output gap</strong> = actual GDP – potential GDP. Positive gap → inflationary; negative gap → recessionary. 
+    <br>• Potential output (full‑employment output) is where LRAS is vertical; it grows over time.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Unit 3: National Income and Price Determination (17%–27%)</summary>
+  <div class="detail-content">
+    <p><strong>3.1 Aggregate Demand (AD)</strong><br>
+    • AD = total quantity of real GDP demanded at each price level. Downward sloping because: 
+    <br> 1. <strong>Wealth effect</strong>: lower P → higher real wealth → C↑. 
+    <br> 2. <strong>Interest‑rate effect</strong>: lower P → lower money demand → lower nominal interest rate → I↑, C↑. 
+    <br> 3. <strong>Exchange‑rate effect</strong>: lower P → lower domestic interest rate → capital outflows → depreciation → NX↑. 
+    <br>• Shifters: changes in C, I, G, NX (e.g., consumer confidence, business expectations, fiscal/monetary policy, foreign incomes, exchange rates). Note: changes in price level cause movement along; changes in any of the components shift the curve.</p>
+
+    <p><strong>3.2 The Multiplier Effect</strong><br>
+    • <strong>MPC</strong> = Δ consumption / Δ disposable income. <strong>MPS</strong> = 1 – MPC. 
+    <br>• <strong>Spending multiplier</strong> = 1 / (1 – MPC) = 1 / MPS. 
+    <br>• <strong>Tax multiplier</strong> = –MPC / MPS. Negative because taxes and GDP move opposite. Smaller magnitude than spending multiplier because a tax cut first increases disposable income, part of which is saved. 
+    <br>• <strong>Balanced budget multiplier</strong> = 1 (equal increase in G and T increases GDP by the same amount). 
+    <br>• The multiplier works in both directions: it magnifies both positive and negative demand shocks. The size of the multiplier is reduced by leakages: savings, taxes, and imports.</p>
+
+    <p><strong>3.3 Short‑Run Aggregate Supply (SRAS)</strong><br>
+    • Upward sloping because nominal wages (and other input prices) are “sticky” in the short run. 
+    <br>• Shifters: changes in input prices (wages, oil), productivity, supply shocks (natural disasters, pandemic), expected inflation, government regulation / taxes on producers. 
+    <br>• <strong>Supply shock</strong>: negative supply shock shifts SRAS left → stagflation (higher P + lower Y); positive supply shock shifts right → lower P + higher Y. 
+    <br>• Distinguish between movement along SRAS (caused by change in price level) and shift (caused by changes in production costs).</p>
+
+    <p><strong>3.4 Long‑Run Aggregate Supply (LRAS)</strong><br>
+    • Vertical at full‑employment output (potential GDP). In the long run, nominal wages are flexible; the price level does not affect real GDP. 
+    <br>• LRAS shifts with changes in quantity/quality of resources (labor, capital, land), technology, and institutions. 
+    <br>• <strong>Money neutrality</strong>: In the long run, changes in the money supply only affect nominal variables (price level, nominal wages) and not real variables (real GDP, employment). 
+    <br>• The vertical LRAS is related to the PPC outward shift: both represent long‑run growth.</p>
+
+    <p><strong>3.5 AD–AS Equilibrium</strong><br>
+    • Short‑run equilibrium: AD = SRAS. Long‑run equilibrium: also on LRAS. 
+    <br>• <strong>Recessionary gap</strong>: short‑run equilibrium output < potential output. Unemployment > natural rate. Price level tends to be lower. 
+    <br>• <strong>Inflationary gap</strong>: output > potential. Unemployment < natural rate. Price level tends to be higher. 
+    <br>• <strong>Full‑employment equilibrium</strong>: AD = SRAS = LRAS.</p>
+
+    <p><strong>3.6 Short‑Run Fluctuations</strong><br>
+    • The economy is subject to temporary demand and supply shocks that create output gaps. Policy can respond or the economy can self‑correct.</p>
+
+    <p><strong>3.7 Long‑Run Self‑Adjustment</strong><br>
+    • Without policy, the economy self‑corrects: 
+    <br>• <strong>Recessionary gap</strong>: high unemployment → nominal wages fall → production costs fall → SRAS shifts right → output returns to potential, price level falls. 
+    <br>• <strong>Inflationary gap</strong>: low unemployment → nominal wages rise → production costs rise → SRAS shifts left → output returns to potential, price level rises. 
+    <br>• The process can be slow; activist policy can speed it up.</p>
+
+    <p><strong>3.8 Fiscal Policy</strong><br>
+    • <strong>Discretionary fiscal policy</strong>: deliberate changes in G and/or T to stabilize the economy. 
+    <br>• Expansionary: ↑G or ↓T → AD right (closes recessionary gap). Contractionary: ↓G or ↑T → AD left (closes inflationary gap). 
+    <br>• Limitations: recognition lag, decision lag, implementation lag, crowding‑out effect (government borrowing raises interest rates → reduces investment). 
+    <br>• <strong>Automatic stabilizers</strong>: features of the tax and transfer system that automatically respond to economic conditions without new legislation. Examples: progressive income taxes (revenues fall in recession), unemployment insurance (transfers rise), welfare programs. They reduce the amplitude of business cycles but do not eliminate them.</p>
+
+    <p><strong>3.9 Automatic Stabilizers in Detail</strong><br>
+    • In a recession, incomes fall → tax revenues automatically decrease, transfer payments (UI, SNAP) increase → disposable income and consumption partially cushion the downturn. In a boom, the reverse happens. 
+    <br>• These built‑in stabilizers help moderate fluctuations and are a first line of defense before discretionary policy is implemented.</p>
+
+    <p><strong>Key formulas & relationships:</strong><br>
+    • Spending multiplier = 1/(1–MPC)<br>
+    • Tax multiplier = –MPC/(1–MPC)<br>
+    • ΔGDP = multiplier × Δ autonomous spending<br>
+    • Output gap = potential GDP – actual GDP (positive → recessionary)</p>
+
+    <p><strong>Graphs to master:</strong> correctly labeling AD, SRAS, LRAS, axes (real GDP and price level), and showing adjustments to gaps.</p>
+  </div>
+</details>
+
+<h2>📘 AP Macroeconomics Unit-by-Unit Summary (Units 4–6)</h2>
+<details>
+  <summary>Unit 4: Financial Sector (18%–23%)</summary>
+  <div class="detail-content">
+    <p><strong>4.1 Financial Assets</strong><br>
+    • <strong>Money</strong>: functions as medium of exchange, unit of account, store of value. 
+    <br>• <strong>Bonds</strong>: debt instruments; bond price and interest rate are inversely related. When a bond pays a fixed coupon, its market price falls if market interest rate rises (so its yield matches market rates). 
+    <br>• <strong>Equities (stocks)</strong>: ownership shares; return from dividends and capital gains. 
+    <br>• <strong>Present value</strong>: asset prices reflect the discounted future income stream. Higher interest rates lower present value of future payments → stock and bond prices fall.</p>
+
+    <p><strong>4.2 Nominal vs. Real Interest Rates</strong><br>
+    • <strong>Nominal interest rate</strong> (i): observed rate. <strong>Real interest rate</strong> (r) = i – expected inflation (π<sup>e</sup>). 
+    <br>• Fisher equation: i = r + π<sup>e</sup>. 
+    <br>• Real rate is the true cost of borrowing and return to saving. Central banks influence nominal rates to steer the real rate.</p>
+
+    <p><strong>4.3 Money Measurement</strong><br>
+    • <strong>M1</strong>: currency in circulation, travelers checks, demand deposits, other checkable deposits. Most liquid. 
+    <br>• <strong>M2</strong>: M1 + savings deposits, small time deposits, retail money market funds. Broader measure. 
+    <br>• Central bank does not directly control broader money measures but influences them through policy tools.</p>
+
+    <p><strong>4.4 Banking and Money Supply Expansion</strong><br>
+    • <strong>Fractional reserve banking</strong>: banks lend a fraction of deposits, creating money. 
+    <br>• <strong>Reserve requirement (rr)</strong>: minimum fraction of deposits banks must hold as reserves. 
+    <br>• <strong>Excess reserves</strong> = actual reserves – required reserves. 
+    <br>• <strong>Money multiplier</strong> = 1 / rr (maximum). Actual multiplier is smaller because of currency drain and excess reserves held by banks. 
+    <br>• ΔMoney supply = initial excess reserves × multiplier (only if all excess reserves are lent out). 
+    <br>• Open market operations: central bank buys bonds → reserves↑ → money supply expands. Sells bonds → reserves↓ → money supply contracts.</p>
+
+    <p><strong>4.5 The Money Market</strong><br>
+    • <strong>Money supply (MS)</strong>: set by central bank, independent of interest rate → vertical curve. 
+    <br>• <strong>Money demand (MD)</strong>: downward sloping due to liquidity preference (opportunity cost of holding money is the nominal interest rate). Shifters: real GDP (transactions demand), price level. 
+    <br>• Equilibrium nominal interest rate: where MS = MD. 
+    <br>• In the ample‑reserves framework (modern), the central bank does not adjust MS to target the rate; instead it uses administered rates (IORB) to directly set the policy rate.</p>
+
+    <p><strong>4.6 Monetary Policy</strong><br>
+    • Traditional tools: open market operations, discount rate, reserve requirement. 
+    <br>• Modern (ample‑reserves) tools: administered rates – <strong>interest on reserve balances (IORB)</strong>, and overnight reverse repo (ON RRP) rate to set a floor. 
+    <br>• Expansionary policy: lower interest rates (increase MS or lower administered rates) → I↑, C↑ → AD↑ → real GDP↑, price level↑. 
+    <br>• Contractionary policy: raise rates → I↓, C↓ → AD↓. 
+    <br>• Limitations: liquidity trap (near‑zero rates, ineffective monetary policy), long‑run neutrality (money only affects nominal variables in the long run).</p>
+
+    <p><strong>4.7 Loanable Funds Market</strong><br>
+    • Determines the <strong>real interest rate</strong>. 
+    <br>• <strong>Supply</strong>: national saving (private + public). Increases when households/government save more → right shift. 
+    <br>• <strong>Demand</strong>: investment demand + government borrowing (deficit). Increases when business confidence is high, government deficit rises → right shift. 
+    <br>• <strong>Crowding out</strong>: increased government deficit raises DLF → real interest rate↑ → reduces private investment. This dampens the expansionary effect of fiscal policy. 
+    <br>• Connection to money market: real rate from loanable funds plus expected inflation gives the nominal rate in money market (Fisher). 
+    <br>• International dimension: higher real interest rate attracts foreign capital → currency appreciation → NX↓ (also a crowding‑out channel).</p>
+
+    <p><strong>Exam focus:</strong> Distinguish between money market (vertical MS) and loanable funds (vertical supply is saving). Show effects of OMO on reserves, money supply, interest rates, and AD. Understand why the modern framework uses ample reserves and how the central bank raises/lowers the policy rate.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Unit 5: Long‑Run Consequences of Stabilization Policies (20%–30%)</summary>
+  <div class="detail-content">
+    <p><strong>5.1 Short‑Run vs. Long‑Run</strong><br>
+    • Short‑run: some prices/wages are sticky → policy can change real GDP and employment. 
+    <br>• Long‑run: wages/prices fully flexible → economy returns to potential output. Only price level and inflation rate change permanently; real variables return to original levels. 
+    <br>• The classical dichotomy and money neutrality hold in the long run.</p>
+
+    <p><strong>5.2 Phillips Curve</strong><br>
+    • <strong>SRPC</strong>: inverse relationship between inflation and unemployment. Movement along SRPC caused by changes in AD. 
+    <br>• <strong>LRPC</strong>: vertical at natural rate of unemployment (NAIRU). No long‑run trade‑off. 
+    <br>• Shifts of SRPC: 
+    <br> - <em>Supply shocks</em>: negative supply shock shifts SRPC up (stagflation). Positive shifts down. 
+    <br> - <em>Expected inflation</em>: when expected inflation rises, SRPC shifts up; when it falls, shifts down. 
+    <br>• Policy implication: attempts to keep unemployment below natural rate only cause accelerating inflation (accelerationist hypothesis). Central banks often set an inflation target and let unemployment adjust.</p>
+
+    <p><strong>5.3 Money Growth and Inflation</strong><br>
+    • Quantity theory of money: M × V = P × Y. In long run, V (velocity) stable, Y at potential. Then ΔM leads to proportional ΔP. 
+    <br>• Sustained high money growth is the root cause of high inflation. Fiscal dominance and central bank financing of government deficits can cause hyperinflation.</p>
+
+    <p><strong>5.4 Government Deficits and National Debt</strong><br>
+    • <strong>Deficit</strong>: G + transfers – tax revenue in a year. Financed by borrowing. 
+    <br>• <strong>National debt</strong>: accumulated deficits. 
+    <br>• Effects: higher DLF → higher real interest rate → crowding out. Large persistent deficits may raise future tax burdens, reduce investment, and slow growth. 
+    <br>• Debt‑to‑GDP ratio indicates sustainability. Rising ratio is a concern.</p>
+
+    <p><strong>5.5 Crowding Out</strong><br>
+    • Direct crowding out: deficit → DLF right → real interest rate↑ → private investment↓. 
+    <br>• Extent depends on interest‑sensitivity of investment and slope of saving. In a deep recession, crowding out may be small because investment is insensitive. If the central bank accommodates the deficit by increasing money supply (monetizing), there is little net increase in interest rates. 
+    <br>• In the long run, crowding out reduces capital stock and potential output.</p>
+
+    <p><strong>5.6 Economic Growth</strong><br>
+    • Growth is sustained increase in potential output (LRAS right, PPC outward). 
+    <br>• Sources: <strong>physical capital</strong> (machines, infrastructure), <strong>human capital</strong> (education, health), <strong>technology</strong> (innovation, R&D), <strong>institutions</strong> (rule of law, property rights, political stability). 
+    <br>• Productivity (output per hour) is key to rising living standards. 
+    <br>• Growth accounting: ΔY/Y = growth of total factor productivity + α(ΔK/K) + (1‑α)(ΔL/L). 
+    <br>• <strong>Production function</strong>: Y = A f(K, L, H, N) where A is technology. 
+    <br>• Policies: protect property rights, invest in education and infrastructure, encourage saving and investment (tax incentives, lower capital gains tax), support R&D, maintain political stability.</p>
+
+    <p><strong>5.7 Public Policy and Growth</strong><br>
+    • Government can foster growth through spending on infrastructure, education, health, and by creating a favorable investment climate. Supply‑side economics emphasizes lowering marginal tax rates and deregulation to shift LRAS and boost growth.</p>
+
+    <p><strong>Graphs</strong>: SRPC, LRPC; AD‑AS with self‑adjustment; LRAS right shifts; loanable funds for crowding out.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Unit 6: Open Economy — International Trade and Finance (10%–13%)</summary>
+  <div class="detail-content">
+    <p><strong>6.1 Balance of Payments</strong><br>
+    • <strong>Current Account (CA)</strong>: trade in goods and services, net income from abroad, net transfers. 
+    <br> - <em>Trade balance</em> = goods exports – goods imports. 
+    <br> - CA surplus = country is a net lender to world; deficit = net borrower. 
+    <br>• <strong>Capital & Financial Account (CFA)</strong>: records purchases/sales of assets (stocks, bonds, real estate, direct investment). 
+    <br>• <strong>CA + CFA = 0</strong> (statistical discrepancy aside). A CA deficit must be financed by a CFA surplus (capital inflows). A CA surplus is offset by capital outflows. 
+    <br>• The US has historically run a large CA deficit, financed by foreigners purchasing US assets (CFA surplus).</p>
+
+    <p><strong>6.2 Exchange Rates</strong><br>
+    • <strong>Nominal exchange rate</strong>: price of one currency in terms of another (e.g., 1 USD = 0.90 EUR). 
+    <br>• <strong>Appreciation</strong>: currency becomes stronger (buys more foreign currency). <strong>Depreciation</strong>: becomes weaker. 
+    <br>• <strong>Real exchange rate</strong> = e × (P / P*) where e = nominal rate, P domestic price, P* foreign price. It's the price of domestic goods relative to foreign goods.</p>
+
+    <p><strong>6.3 Foreign Exchange Market</strong><br>
+    • Supply and demand for a currency determine its exchange rate. 
+    <br>• <strong>Demand for USD</strong>: from foreigners buying US exports and investing in US assets (capital inflows). 
+    <br>• <strong>Supply of USD</strong>: from US residents buying imports and investing abroad (capital outflows). 
+    <br>• Shifters: 
+    <br> - <em>Relative interest rates</em>: higher US rates → foreign demand for USD↑ → appreciation. 
+    <br> - <em>Relative income</em>: US growth > foreign growth → imports↑ → supply of USD↑ → depreciation. 
+    <br> - <em>Relative inflation</em>: higher US inflation → US goods less attractive → demand for USD↓ → depreciation. 
+    <br> - <em>Speculation and expectations</em>.</p>
+
+    <p><strong>6.4 Policy and Exchange Rates</strong><br>
+    • Expansionary US monetary policy → lower interest rates → capital outflows, USD depreciation. Contractionary → appreciation. 
+    <br>• Fiscal expansion (deficit) can raise interest rates → attract capital → appreciation. However, if the expansion leads to inflation, that could lead to depreciation. Net effect depends on relative strength.</p>
+
+    <p><strong>6.5 Exchange Rates and Net Exports</strong><br>
+    • Appreciation → exports more expensive, imports cheaper → NX↓. Depreciation → exports cheaper, imports expensive → NX↑. 
+    <br>• This affects AD: net exports are a component of AD. Trade policy (tariffs, quotas) also alter the trade balance but may provoke retaliation.</p>
+
+    <p><strong>6.6 Real Interest Rates and International Capital Flows</strong><br>
+    • Higher domestic real rate (relative to world) attracts foreign financial capital → demand for domestic currency↑ → appreciation → NX↓ (open‑economy crowding out). 
+    <br>• This channel shows the linkage between loanable funds market, foreign exchange market, and goods market. 
+    <br>• The Mundell‑Fleming model (for reference, not required in AP) explains these interactions under fixed vs. floating exchange rates. AP focuses on floating rates.</p>
+
+    <p><strong>Key diagrams</strong>: foreign exchange market (currency vs. exchange rate); showing shifts from interest rate changes, income changes, etc. Linking to AD‑AS and net exports.</p>
+  </div>
+</details>
+
+
+
+
+  <!-- ====== DIVIDER ====== -->
+  <div class="section-divider"><span>INTERACTIVE GRAPHS & POLICY SIMULATION</span></div>
+
+  <!-- ====== KEY CONCEPTS ====== -->
+  <h2>🔑 Key Concepts & Definitions</h2>
+  <div class="definition-grid">
+    <div class="card"><div class="term">GDP</div><div class="definition">Total market value of all final goods and services produced in a country in a year.</div><div class="example"><strong>Example:</strong> US nominal GDP $25 trillion.</div><div class="note">ⓘ Real GDP = nominal adjusted for inflation.</div></div>
+    <div class="card"><div class="term">Unemployment Rate</div><div class="definition">Percentage of the labor force without a job but actively looking.</div><div class="example"><strong>Example:</strong> 10M employed + 1M unemployed = 9.1%.</div><div class="note">ⓘ Natural rate = frictional + structural.</div></div>
+    <div class="card"><div class="term">Inflation</div><div class="definition">Sustained rise in the general price level (CPI or GDP deflator).</div><div class="example"><strong>Example:</strong> CPI 250→260 = 4% inflation.</div></div>
+    <div class="card"><div class="term">Automatic Stabilizers</div><div class="definition">Fiscal mechanisms that automatically offset economic fluctuations without new legislation. E.g., progressive taxes, unemployment insurance.</div><div class="example"><strong>Example:</strong> In a recession, tax revenues fall and transfer payments rise, cushioning the decline in disposable income and consumption.</div></div>
+    <div class="card"><div class="term">Loanable Funds Market</div><div class="definition">Savers supply, borrowers demand; determines the real interest rate.</div><div class="example"><strong>Example:</strong> Deficit raises demand → higher rates.</div></div>
+    <div class="card"><div class="term">Phillips Curve</div><div class="definition">Short-run inverse relationship between inflation and unemployment; long-run vertical at natural rate.</div><div class="example"><strong>Example:</strong> Expansionary AD → move up-left along SRPC.</div></div>
+  </div>
+
+  <h2>📊 Interactive Macro Graphs</h2>
+
+  <!-- AD-AS -->
+  <div class="graph-box">
+    <h3>⚖️ AD-AS Model</h3>
+    <canvas id="adasChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="adRightC">📈 AD → (C↑)</button>
+      <button class="btn" id="adRightG">📈 AD → (G↑)</button>
+      <button class="btn warn" id="adLeftT">📉 AD ← (T↑)</button>
+      <button class="btn info" id="adLeftNX">📉 AD ← (NX↓)</button>
+      <button class="btn" id="srasRightTech">📈 SRAS → (Tech)</button>
+      <button class="btn warn" id="srasLeftOil">📉 SRAS ← (Oil↑)</button>
+      <button class="btn growth" id="lrasGrowth">🚀 Long‑run Growth</button>
+      <button class="btn reset" id="adasReset">↺ Reset</button>
+    </div>
+    <div id="adasFactor" class="factor-display"></div>
+    <p class="label-desc">Price Level vs Real GDP.</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> Distinguish between movement along AD (price level change) vs. shifts (spending changes). Explain the wealth, interest-rate, and exchange-rate effects. Know that LRAS is vertical at full employment. Long‑run growth shifts LRAS, SRAS, and AD to the right.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – AD-AS Model</summary>
+      <div class="detail-content">
+        <p><strong>Core Concepts:</strong> The AD-AS model explains how the overall price level and real GDP are determined by the interaction of aggregate demand and aggregate supply.</p>
+        <p><strong>AD:</strong> Downward sloping because of the wealth effect, interest-rate effect, and exchange-rate effect. Shifts right when C, I, G, or NX increase (e.g., tax cut, optimism, more government spending, foreign growth). Shifts left with opposite changes.</p>
+        <p><strong>SRAS:</strong> Upward sloping due to sticky wages and menu costs. Shifts right when input prices fall, productivity rises, or positive supply shocks occur. Shifts left with higher input costs (e.g., oil price spike).</p>
+        <p><strong>LRAS:</strong> Vertical at potential output (full employment). Determined by resources, technology, and institutions.</p>
+        <p><strong>Equilibrium:</strong> Short-run equilibrium where AD = SRAS. Long-run equilibrium also on LRAS.</p>
+        <p><strong>Gaps:</strong> Recessionary gap (output below potential) can be closed by expansionary policy (increase AD) or by self-correction (wages fall → SRAS right). Inflationary gap (output above potential) closed by contractionary policy or self-correction (wages rise → SRAS left).</p>
+        <p><strong>Growth:</strong> Long-run growth is shown by rightward shifts of LRAS (and often SRAS and AD).</p>
+        <p><strong>Common mistakes:</strong> Confusing movement along with shift; treating SRAS as vertical; believing that all growth requires only AD increases.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Loanable Funds -->
+  <div class="graph-box">
+    <h3>🏦 Loanable Funds Market</h3>
+    <canvas id="loanableChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="dlfRightDef">📈 Dem → (Deficit)</button>
+      <button class="btn warn" id="dlfLeftSurp">📉 Dem ← (Surplus)</button>
+      <button class="btn" id="slfRightSave">📈 Sup → (Save↑)</button>
+      <button class="btn warn" id="slfLeftSave">📉 Sup ← (Save↓)</button>
+      <button class="btn reset" id="loanableReset">↺ Reset</button>
+    </div>
+    <div id="loanableFactor" class="factor-display"></div>
+    <p class="label-desc">Real Interest Rate vs Quantity of Loanable Funds.</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> Supply = national saving (private + public). Demand = investment + net capital outflow. A budget deficit increases demand → higher real interest rate → crowds out private investment. Changes in tax incentives for saving shift supply.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Loanable Funds Market</summary>
+      <div class="detail-content">
+        <p><strong>Purpose:</strong> Explains the determination of the real interest rate through the interaction of savers (supply) and borrowers (demand).</p>
+        <p><strong>Supply (SLF):</strong> Comes from private saving and public saving (budget surplus). Increases when households save more, firms retain earnings, or government runs a surplus. Shifts right.</p>
+        <p><strong>Demand (DLF):</strong> Comes from firms wanting to invest in physical capital and from households/firms borrowing for other purposes. Also includes government borrowing when there's a budget deficit. Shifts right when business confidence rises, government deficit rises, or there’s an increase in expected profitability of investment.</p>
+        <p><strong>Crowding out:</strong> An increase in government deficit raises the demand for loanable funds, increasing the real interest rate and reducing private investment spending – the crowding-out effect. This weakens the expansionary impact of fiscal policy.</p>
+        <p><strong>Policy relevance:</strong> Tax incentives for saving (e.g., IRA, 401k) shift supply right, lowering interest rates and boosting investment. A budget surplus shifts demand left or supply right (if public saving rises).</p>
+        <p><strong>Key linkages:</strong> The real interest rate from this market influences investment, which is a component of AD. Also affects net capital outflow and the exchange rate.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Phillips Curve -->
+  <div class="graph-box">
+    <h3>🔄 Phillips Curve (SRPC + LRPC)</h3>
+    <canvas id="phillipsChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="phillipsExpand">📈 Expansionary AD</button>
+      <button class="btn warn" id="phillipsContract">📉 Contractionary AD</button>
+      <button class="btn info" id="phillipsShiftUp">⚠️ Supply Shock (SRPC↑)</button>
+      <button class="btn reset" id="phillipsReset">↺ Reset</button>
+    </div>
+    <div id="phillipsFactor" class="factor-display"></div>
+    <p class="label-desc">Inflation Rate vs Unemployment Rate. LRPC vertical at natural rate (5%).</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> Short-run trade-off exists. Long-run Phillips curve is vertical at the natural rate of unemployment. Supply shocks shift the short-run curve outward. Explain using AD-AS: expansionary AD moves economy up-left along SRPC.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Phillips Curve</summary>
+      <div class="detail-content">
+        <p><strong>Short-Run Phillips Curve (SRPC):</strong> Shows an inverse relationship between inflation and unemployment. When AD increases, the economy moves up-left along the SRPC (lower unemployment, higher inflation). When AD decreases, moves down-right.</p>
+        <p><strong>Long-Run Phillips Curve (LRPC):</strong> Vertical at the natural rate of unemployment (NAIRU). In the long run, there is no trade-off between inflation and unemployment. If the central bank tries to keep unemployment below the natural rate, inflation will accelerate.</p>
+        <p><strong>Shifts of SRPC:</strong> The entire SRPC shifts when there is a supply shock. A negative supply shock (e.g., oil price spike) shifts the SRPC up (higher inflation at any unemployment rate). A positive supply shock shifts it down. Also shifts if expected inflation changes.</p>
+        <p><strong>Policy implications:</strong> Expansionary policies lower unemployment at the cost of higher inflation (movement along SRPC). Contractionary policies raise unemployment but lower inflation. The LRPC suggests central banks should focus on price stability and not try to exploit the short-run trade-off permanently.</p>
+        <p><strong>Common error:</strong> Mixing up movement along SRPC (caused by AD changes) with shifts of the entire SRPC (caused by supply shocks or changes in expectations).</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Money Market -->
+  <div class="graph-box">
+    <h3>💵 Money Market</h3>
+    <canvas id="moneyChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="msRight">📈 MS → (Exp)</button>
+      <button class="btn warn" id="msLeft">📉 MS ← (Contr)</button>
+      <button class="btn" id="mdRight">📈 MD → (Y↑)</button>
+      <button class="btn reset" id="moneyReset">↺ Reset</button>
+    </div>
+    <div id="moneyFactor" class="factor-display"></div>
+    <p class="label-desc">Nominal Interest Rate vs Quantity of Money.</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> The money supply curve is vertical because the central bank sets it. Money demand slopes down (liquidity preference). Open market operations shift MS. Changes in real GDP or price level shift MD. Link to AD via interest rates.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Money Market</summary>
+      <div class="detail-content">
+        <p><strong>Money Supply (MS):</strong> Determined by the central bank and is independent of the interest rate; therefore vertical. Tools: open market operations (buying bonds → expand MS; selling bonds → contract MS), discount rate, reserve requirement.</p>
+        <p><strong>Money Demand (MD):</strong> Downward sloping due to the liquidity preference (the opportunity cost of holding money is the forgone interest). Shifts right when nominal GDP (real GDP or price level) increases, as more transactions require more money.</p>
+        <p><strong>Equilibrium interest rate:</strong> The nominal interest rate adjusts to equate money demand and supply.</p>
+        <p><strong>Monetary transmission:</strong> Expansionary OMO → MS right → interest rate falls → investment and consumption rise → AD right. Contractionary OMO → MS left → interest rate rises → I and C fall → AD left.</p>
+        <p><strong>Note:</strong> In the ample reserves framework (modern), the central bank controls the interest rate directly through administered rates (IORB, ON RRP), and the money supply becomes horizontal at the target rate. This model is used for the reserve market rather than the traditional money market.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Reserve Market -->
+  <div class="graph-box">
+    <h3>🏛️ Reserve Market (Scarce & Ample Regimes)</h3>
+    <canvas id="reserveChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="rsRight">📈 RS → (OMO buy)</button>
+      <button class="btn warn" id="rsLeft">📉 RS ← (OMO sell)</button>
+      <button class="btn info" id="rdRight">📈 RD → (Demand↑)</button>
+      <button class="btn reset" id="reserveReset">↺ Reset</button>
+    </div>
+    <div id="reserveFactor" class="factor-display"></div>
+    <div id="reserveRegime" class="factor-display" style="color:#b45309; font-weight:700;"></div>
+    <p class="label-desc">Policy Rate vs Quantity of Reserves. Ample: RD increase = horizontal parts shift up. Scarce: sloping part shifts right.</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> <em>Scarce reserves</em> (supply intersects downward‑sloping part): central bank uses OMO to change the policy rate. <em>Ample reserves</em> (supply intersects flat part): central bank uses floor rate (IORB) and administered rates. Demand increase: in scarce regime, demand curve shifts right; in ample regime, demand curve shifts up (increasing the floor/cap).
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Reserve Market</summary>
+      <div class="detail-content">
+        <p><strong>Purpose:</strong> This is the modern model for how the central bank achieves its target policy rate (federal funds rate in the US).</p>
+        <p><strong>Demand for reserves (RD):</strong> Banks demand reserves for two reasons: required reserves and excess reserves. The demand curve has a flat upper segment at the discount rate (banks won't pay more than that) and a flat lower segment at the interest on reserve balances (IORB) – banks won't lend reserves below that rate. The middle portion is downward-sloping.</p>
+        <p><strong>Supply of reserves (RS):</strong> Controlled by the central bank. In a corridor (scarce reserves) system, the supply is set so it intersects the downward-sloping part. Under ample reserves, the supply is large enough to intersect the flat lower segment, so the policy rate equals the IORB.</p>
+        <p><strong>Scarce reserves (corridor system):</strong> The central bank uses open market operations to adjust the supply and hit its target rate. A buy operation shifts RS right, lowering the rate; a sell shifts RS left, raising the rate.</p>
+        <p><strong>Ample reserves (floor system):</strong> The central bank maintains a large quantity of reserves, so small changes in demand don't affect the rate. The policy rate is set by administered rates (mainly IORB). To tighten, the central bank raises the IORB; to ease, it lowers it.</p>
+        <p><strong>Demand shifts:</strong> In scarce regime, an increase in demand (shift right) raises the policy rate; in ample regime, a demand increase (shift up, typically when the floor/cap rise) pushes the rate up.</p>
+        <p><strong>Key exam points:</strong> Know the shape of the reserve demand curve. Understand why the ample reserves system is the current framework and how the central bank no longer needs OMO to move rates. Be able to explain the role of IORB and ON RRP.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- PPF -->
+  <div class="graph-box">
+    <h3>🌾 Production Possibilities Frontier</h3>
+    <canvas id="ppfChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn" id="ppfOut">🚀 Outward (Growth)</button>
+      <button class="btn warn" id="ppfIn">⚠️ Inward (Disaster)</button>
+      <button class="btn reset" id="ppfReset">↺ Reset</button>
+    </div>
+    <div id="ppfFactor" class="factor-display"></div>
+    <p class="label-desc">Capital Goods vs Consumer Goods.</p>
+    <div class="exam-note">
+      <strong>AP Exam Tip:</strong> Points inside the PPF are inefficient. The bowed‑out shape reflects increasing opportunity cost. Economic growth shifts the PPF outward. Shown together with LRAS/AD‑AS models.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Production Possibilities Frontier</summary>
+      <div class="detail-content">
+        <p><strong>Definition:</strong> The PPF illustrates the maximum combinations of two goods (here capital and consumer goods) an economy can produce given its resources and technology.</p>
+        <p><strong>Efficiency:</strong> Points on the curve are productively efficient. Points inside are inefficient (unemployment or underemployment). Points outside are unattainable with current resources.</p>
+        <p><strong>Opportunity cost:</strong> The slope of the PPF shows the opportunity cost of one good in terms of the other. A concave (bowed-out) shape indicates increasing opportunity cost.</p>
+        <p><strong>Economic growth:</strong> Represented by an outward shift of the PPF. Causes: more resources (labor, capital, land), better technology, improvements in human capital. Also can result from trade or specialization.</p>
+        <p><strong>Link to macro models:</strong> An outward PPF shift is the foundation behind a rightward shift in LRAS. Both represent long-run growth.</p>
+        <p><strong>Exam tip:</strong> Clearly differentiate between a point being unattainable (outside) vs inefficient (inside). Explain how investment in capital goods today can shift the PPF outward tomorrow.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Economic Cycle & Automatic Stabilizers -->
+  <h2>🔄 Economic Cycle & Automatic Stabilizers</h2>
+  <div class="graph-box">
+    <h3>Real GDP over Time (Business Cycle)</h3>
+    <canvas id="cycleChart" width="500" height="300"></canvas>
+    <div class="manipulate-bar">
+      <button class="btn stabilizer" id="applyStabilizer">🛡️ Apply Automatic Stabilizers</button>
+      <button class="btn reset" id="resetCycle">↺ Reset Cycle</button>
+    </div>
+    <div id="cycleFactor" class="factor-display"></div>
+    <div class="exam-note">
+      <strong>Automatic Stabilizers:</strong> Government policies that automatically reduce the amplitude of economic fluctuations without discretionary action. Examples include progressive income taxes (revenues fall in recession, rise in boom) and unemployment benefits (transfers rise in recession). They act as shock absorbers, making the business cycle smoother. <br>
+      <strong>Notice:</strong> The stabilizers reduce the size of both positive and negative output gaps, but they do not eliminate them or change their sign. The economy still experiences cycles, just with milder swings.
+    </div>
+    <details>
+      <summary>📚 Detailed Unit Summary – Business Cycle & Automatic Stabilizers</summary>
+      <div class="detail-content">
+        <p><strong>Business Cycle:</strong> Fluctuations in real GDP around its long-term trend (potential output). Phases: expansion, peak, contraction (recession), trough.</p>
+        <p><strong>Output gap:</strong> The difference between actual real GDP and potential GDP. A positive gap (inflationary) means the economy is producing above potential; a negative gap (recessionary) means it's below potential.</p>
+        <p><strong>Automatic Stabilizers:</strong> Features of the tax and transfer system that automatically reduce the size of output gaps without new government action. Examples: progressive income taxes (tax revenues rise faster than incomes in booms, fall faster in busts), unemployment compensation, welfare programs.</p>
+        <p><strong>How they work:</strong> In a recession, incomes fall, so tax payments automatically decrease and transfer payments (like unemployment benefits) rise. This helps maintain disposable income and consumption, cushioning the downturn. In a boom, taxes rise and transfers fall, dampening the expansion.</p>
+        <p><strong>Effectiveness:</strong> They mitigate fluctuations but cannot completely eliminate business cycles. The degree of automatic stabilization depends on the progressivity of the tax code and the generosity of the social safety net.</p>
+        <p><strong>Exam focus:</strong> Distinguish automatic stabilizers from discretionary fiscal policy (which requires new legislation). Recognize that they are built-in, rule-based mechanisms.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Policy Transmission -->
+  <h2>🔁 Policy Transmission & Return to Long‑Run Equilibrium</h2>
+  <div class="graph-box" style="background:#fff;">
+    <h3>Step‑by‑Step Chain: Gap → Policy → AD‑AS Impact</h3>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+      <div>
+        <strong>1. Initial Gap:</strong><br>
+        <select id="gapSelect" style="padding:0.4rem; border-radius:0.5rem;">
+          <option value="none">-- Choose gap --</option>
+          <option value="recessionary">Recessionary (Contractionary) Gap</option>
+          <option value="inflationary">Inflationary Gap</option>
+        </select>
+      </div>
+      <div id="policySelection" style="display:none;">
+        <strong>2. Policy Choice:</strong><br>
+        <select id="policySelect" style="padding:0.4rem; border-radius:0.5rem;">
+          <option value="">-- Select policy --</option>
+          <option value="fiscal_expansionary">Fiscal: Increase G / Cut T</option>
+          <option value="fiscal_contractionary">Fiscal: Decrease G / Raise T</option>
+          <option value="monetary_expansionary">Monetary: Lower rates / Buy bonds</option>
+          <option value="monetary_contractionary">Monetary: Raise rates / Sell bonds</option>
+        </select>
+        <button class="btn" id="applyPolicy">Apply Policy</button>
+      </div>
+      <div>
+        <strong>3. Auto Long‑Run Adjustment</strong><br>
+        <button class="btn success" id="autoAdjustBtn">Let economy self‑correct</button>
+      </div>
+    </div>
+    <div id="policyChainDisplay" class="chain-box">
+      <span class="chain-arrows">⬅️ Select a gap and policy to see the transmission chain.</span>
+    </div>
+    <button class="btn reset" id="resetChainBtn">↺ Reset to Full Employment</button>
+    <details>
+      <summary>📚 Detailed Unit Summary – Policy Transmission & Long-Run Adjustment</summary>
+      <div class="detail-content">
+        <p><strong>Recessionary Gap (actual GDP < potential):</strong>
+          <br>• Appropriate policy: expansionary fiscal (increase G, cut T) or monetary (lower rates, buy bonds) → AD right → GDP rises, price level rises.
+          <br>• Self-correction: unemployment high → wages eventually fall → SRAS shifts right → return to full employment with lower price level.</p>
+        <p><strong>Inflationary Gap (actual GDP > potential):</strong>
+          <br>• Appropriate policy: contractionary fiscal (decrease G, raise T) or monetary (raise rates, sell bonds) → AD left → price level falls, GDP falls.
+          <br>• Self-correction: low unemployment → wages rise → SRAS shifts left → return to full employment with higher price level.</p>
+        <p><strong>Policy lags:</strong> Recognition lag, decision lag, implementation lag make discretionary policy timing difficult. Automatic stabilizers help because they work immediately.</p>
+        <p><strong>Mixing policies:</strong> Using the wrong policy (e.g., expansionary in an inflationary gap) worsens the imbalance. The interactive tool illustrates this.</p>
+        <p><strong>Exam tip:</strong> Be able to explain each step of the transmission mechanism, including the impact on unemployment and inflation.</p>
+      </div>
+    </details>
+  </div>
+
+  <h2>🎥 Video Resources</h2>
+  <div class="video-grid">
+    <div class="video-card"><strong>ALL of Macro Review</strong><br><a href="https://www.youtube.com/watch?v=jLhuJlRAIp8" target="_blank">Complete Macroeconomics Review</a></div>
+    <div class="video-card"><strong>AD-AS Model</strong><br><a href="https://www.youtube.com/watch?v=8PmuB8-_ogo" target="_blank">Aggregate Demand & Aggregate Supply</a></div>
+    <div class="video-card"><strong>Phillips Curve</strong><br><a href="https://www.youtube.com/watch?v=7-wQ_qLvNuQ" target="_blank">Phillips Curve Explained</a></div>
+    <div class="video-card"><strong>Money Market & Monetary Policy</strong><br><a href="https://www.youtube.com/watch?v=lTw5-CPJbNw" target="_blank">Money Market & Monetary Policy</a><br><a href="https://www.youtube.com/watch?v=OqCK5o25Rx4" target="_blank">Monetary Policy & Reserve Market</a></div>
+  </div>
+  <hr>
+  <p style="text-align:right; color:#475569;">Macroeconomics Study Guide · April 2026</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+
+  // ---- AD-AS ----
+  const adasCtx = document.getElementById('adasChart').getContext('2d');
+  const adOriginal = [{x:400,y:130},{x:600,y:110},{x:800,y:90},{x:1000,y:70},{x:1200,y:50}];
+  const srasOriginal = [{x:200,y:50},{x:500,y:70},{x:800,y:90},{x:1100,y:110},{x:1400,y:130}];
+  const lrasOriginal = [{x:800,y:30},{x:800,y:150}];
+  const adasChart = new Chart(adasCtx, {
+    type:'scatter', data:{datasets:[
+      {label:'AD', data:JSON.parse(JSON.stringify(adOriginal)), showLine:true, borderColor:'#c0392b', pointRadius:4, borderWidth:3, tension:0.2},
+      {label:'SRAS', data:JSON.parse(JSON.stringify(srasOriginal)), showLine:true, borderColor:'#27ae60', pointRadius:4, borderWidth:3, tension:0.2},
+      {label:'LRAS', data:JSON.parse(JSON.stringify(lrasOriginal)), showLine:true, borderColor:'#2c3e50', borderDash:[6,4], pointRadius:0, borderWidth:2}
+    ]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Real GDP'},min:0,max:1600}, y:{title:{display:true,text:'Price Level'},min:20,max:160} }, plugins:{title:{display:true,text:'AD-AS Model'}} }
+  });
+  const adasFactor = document.getElementById('adasFactor');
+  function shiftAD(delta, msg){ adasChart.data.datasets[0].data = adasChart.data.datasets[0].data.map(p=>({x:p.x+delta,y:p.y})); adasChart.update(); adasFactor.textContent=msg; }
+  function shiftSRAS(delta, msg){ adasChart.data.datasets[1].data = adasChart.data.datasets[1].data.map(p=>({x:p.x+delta,y:p.y})); adasChart.update(); adasFactor.textContent=msg; }
+  function resetADAS(){
+    adasChart.data.datasets[0].data = JSON.parse(JSON.stringify(adOriginal));
+    adasChart.data.datasets[1].data = JSON.parse(JSON.stringify(srasOriginal));
+    adasChart.data.datasets[2].data = JSON.parse(JSON.stringify(lrasOriginal));
+    adasChart.update(); adasFactor.textContent='';
+  }
+  document.getElementById('adRightC').onclick = ()=> shiftAD(150, 'Factor: Consumer confidence↑ → C↑ → AD right');
+  document.getElementById('adRightG').onclick = ()=> shiftAD(150, 'Factor: Government spending↑ → AD right');
+  document.getElementById('adLeftT').onclick = ()=> shiftAD(-150, 'Factor: Tax increase → Disposable income↓ → AD left');
+  document.getElementById('adLeftNX').onclick = ()=> shiftAD(-150, 'Factor: Foreign recession → NX↓ → AD left');
+  document.getElementById('srasRightTech').onclick = ()=> shiftSRAS(200, 'Factor: Technology advance → SRAS right');
+  document.getElementById('srasLeftOil').onclick = ()=> shiftSRAS(-200, 'Factor: Oil price spike → SRAS left');
+  document.getElementById('lrasGrowth').onclick = ()=>{
+    adasChart.data.datasets[0].data = adasChart.data.datasets[0].data.map(p=>({x:p.x+150,y:p.y}));
+    adasChart.data.datasets[1].data = adasChart.data.datasets[1].data.map(p=>({x:p.x+150,y:p.y}));
+    adasChart.data.datasets[2].data = adasChart.data.datasets[2].data.map(p=>({x:p.x+150,y:p.y}));
+    adasChart.update(); adasFactor.textContent='Factor: Long‑run growth → LRAS, SRAS, AD all shift right';
+  };
+  document.getElementById('adasReset').onclick = resetADAS;
+
+  // ---- Loanable Funds ----
+  const loanCtx = document.getElementById('loanableChart').getContext('2d');
+  const dlfOrig = [{x:400,y:8},{x:500,y:7},{x:600,y:6},{x:700,y:5},{x:800,y:4}];
+  const slfOrig = [{x:400,y:4},{x:500,y:5},{x:600,y:6},{x:700,y:7},{x:800,y:8}];
+  const loanChart = new Chart(loanCtx, {
+    type:'scatter', data:{datasets:[
+      {label:'Demand', data:JSON.parse(JSON.stringify(dlfOrig)), showLine:true, borderColor:'#2980b9', pointRadius:3, borderWidth:3},
+      {label:'Supply', data:JSON.parse(JSON.stringify(slfOrig)), showLine:true, borderColor:'#27ae60', pointRadius:3, borderWidth:3}
+    ]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Quantity of Loanable Funds'},min:300,max:900}, y:{title:{display:true,text:'Real Interest Rate (%)'},min:2,max:10} }, plugins:{title:{display:true,text:'Loanable Funds Market'}} }
+  });
+  const loanFactor = document.getElementById('loanableFactor');
+  function shiftDLF(delta, msg){ loanChart.data.datasets[0].data = loanChart.data.datasets[0].data.map(p=>({x:p.x+delta,y:p.y})); loanChart.update(); loanFactor.textContent=msg; }
+  function shiftSLF(delta, msg){ loanChart.data.datasets[1].data = loanChart.data.datasets[1].data.map(p=>({x:p.x+delta,y:p.y})); loanChart.update(); loanFactor.textContent=msg; }
+  document.getElementById('dlfRightDef').onclick = ()=> shiftDLF(100, 'Factor: Budget deficit → Demand↑ → interest rate↑');
+  document.getElementById('dlfLeftSurp').onclick = ()=> shiftDLF(-100, 'Factor: Budget surplus → Demand↓ → interest rate↓');
+  document.getElementById('slfRightSave').onclick = ()=> shiftSLF(100, 'Factor: Higher saving → Supply↑ → interest rate↓');
+  document.getElementById('slfLeftSave').onclick = ()=> shiftSLF(-100, 'Factor: Lower saving → Supply↓ → interest rate↑');
+  document.getElementById('loanableReset').onclick = ()=>{
+    loanChart.data.datasets[0].data = JSON.parse(JSON.stringify(dlfOrig));
+    loanChart.data.datasets[1].data = JSON.parse(JSON.stringify(slfOrig));
+    loanChart.update(); loanFactor.textContent='';
+  };
+
+  // ---- Phillips Curve ----
+  const philCtx = document.getElementById('phillipsChart').getContext('2d');
+  const srpcOrig = [{x:7,y:2},{x:6,y:3},{x:5,y:4.5},{x:4,y:7},{x:3,y:10}];
+  const lrpcLine = [{x:5,y:0},{x:5,y:12}];
+  const philChart = new Chart(philCtx, {
+    type:'scatter', data:{datasets:[
+      {label:'SRPC', data:JSON.parse(JSON.stringify(srpcOrig)), showLine:true, borderColor:'#8e44ad', pointRadius:3, tension:0.3},
+      {label:'LRPC', data:lrpcLine, showLine:true, borderColor:'#2c3e50', borderDash:[8,4], pointRadius:0, borderWidth:2},
+      {label:'Current position', data:[{x:5,y:4.5}], pointRadius:8, pointBackgroundColor:'red', showLine:false}
+    ]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Unemployment Rate (%)'},min:2,max:8}, y:{title:{display:true,text:'Inflation Rate (%)'},min:0,max:12} }, plugins:{title:{display:true,text:'Phillips Curve'}} }
+  });
+  const philFactor = document.getElementById('phillipsFactor');
+  function movePhil(x,y,msg){ philChart.data.datasets[2].data = [{x,y}]; philChart.update(); philFactor.textContent=msg; }
+  function shiftSRPC(dy, msg){ philChart.data.datasets[0].data = srpcOrig.map(p=>({x:p.x, y:p.y+dy})); philChart.update(); philFactor.textContent=msg; }
+  function resetPhil(){
+    philChart.data.datasets[0].data = JSON.parse(JSON.stringify(srpcOrig));
+    philChart.data.datasets[2].data = [{x:5,y:4.5}];
+    philChart.update(); philFactor.textContent='';
+  }
+  document.getElementById('phillipsExpand').onclick = ()=>{
+    movePhil(3.5,8.5,'Expansionary AD → up‑left along SRPC');
+    adasChart.data.datasets[0].data = adOriginal.map(p=>({x:p.x+150,y:p.y})); adasChart.update();
+  };
+  document.getElementById('phillipsContract').onclick = ()=>{
+    movePhil(6,2.5,'Contractionary AD → down‑right along SRPC');
+    adasChart.data.datasets[0].data = adOriginal.map(p=>({x:p.x-150,y:p.y})); adasChart.update();
+  };
+  document.getElementById('phillipsShiftUp').onclick = ()=>{
+    shiftSRPC(2,'Negative supply shock → SRPC shifts up');
+    adasChart.data.datasets[1].data = srasOriginal.map(p=>({x:p.x-200,y:p.y})); adasChart.update();
+  };
+  document.getElementById('phillipsReset').onclick = ()=>{ resetPhil(); resetADAS(); };
+
+  // ---- Money Market ----
+  const moneyCtx = document.getElementById('moneyChart').getContext('2d');
+  const mdOrig = [{x:500,y:8},{x:600,y:7},{x:700,y:6},{x:800,y:5},{x:900,y:4}];
+  const msVert = [{x:700,y:2},{x:700,y:10}];
+  const moneyChart = new Chart(moneyCtx, {
+    type:'scatter', data:{datasets:[
+      {label:'MD', data:JSON.parse(JSON.stringify(mdOrig)), showLine:true, borderColor:'#2980b9', pointRadius:3},
+      {label:'MS', data:JSON.parse(JSON.stringify(msVert)), showLine:true, borderColor:'#c0392b', pointRadius:0, borderWidth:3}
+    ]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Quantity of Money'},min:400,max:1000}, y:{title:{display:true,text:'Nominal Interest Rate (%)'},min:1,max:11} }, plugins:{title:{display:true,text:'Money Market'}} }
+  });
+  const moneyFactor = document.getElementById('moneyFactor');
+  document.getElementById('msRight').onclick = ()=>{
+    moneyChart.data.datasets[1].data = [{x:850,y:2},{x:850,y:10}]; moneyChart.update();
+    moneyFactor.textContent='Factor: Expansionary OMO → MS increases → interest rate falls';
+  };
+  document.getElementById('msLeft').onclick = ()=>{
+    moneyChart.data.datasets[1].data = [{x:550,y:2},{x:550,y:10}]; moneyChart.update();
+    moneyFactor.textContent='Factor: Contractionary OMO → MS decreases → interest rate rises';
+  };
+  document.getElementById('mdRight').onclick = ()=>{
+    moneyChart.data.datasets[0].data = mdOrig.map(p=>({x:p.x+100,y:p.y})); moneyChart.update();
+    moneyFactor.textContent='Factor: GDP↑ or Price↑ → Transactions demand for money rises';
+  };
+  document.getElementById('moneyReset').onclick = ()=>{
+    moneyChart.data.datasets[0].data = JSON.parse(JSON.stringify(mdOrig));
+    moneyChart.data.datasets[1].data = JSON.parse(JSON.stringify(msVert));
+    moneyChart.update(); moneyFactor.textContent='';
+  };
+
+  // ---- Reserve Market ----
+  const resCtx = document.getElementById('reserveChart').getContext('2d');
+  const rdOrig = [
+    {x:100,y:8},{x:150,y:8},
+    {x:200,y:8},{x:250,y:7},{x:300,y:6},{x:350,y:5},{x:400,y:4},
+    {x:450,y:4},{x:500,y:4}
+  ];
+  const rsOrig = [{x:300,y:2},{x:300,y:9}];
+  const reserveChart = new Chart(resCtx, {
+    type:'scatter', data:{datasets:[
+      {label:'Reserve Demand (RD)', data:JSON.parse(JSON.stringify(rdOrig)), showLine:true, borderColor:'#2980b9', pointRadius:2, borderWidth:2},
+      {label:'Reserve Supply (RS)', data:JSON.parse(JSON.stringify(rsOrig)), showLine:true, borderColor:'#c0392b', pointRadius:0, borderWidth:3}
+    ]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Reserves'},min:0,max:600}, y:{title:{display:true,text:'Policy Rate (%)'},min:2,max:10} }, plugins:{title:{display:true,text:'Reserve Market'}} }
+  });
+  const reserveFactor = document.getElementById('reserveFactor');
+  const reserveRegime = document.getElementById('reserveRegime');
+  let currentReserveRegime = null;
+
+  function detectReserveRegime() {
+    const supplyX = reserveChart.data.datasets[1].data[0].x;
+    const demandData = reserveChart.data.datasets[0].data;
+    let y = null;
+    for (let i = 0; i < demandData.length - 1; i++) {
+      const p1 = demandData[i];
+      const p2 = demandData[i+1];
+      if (supplyX >= p1.x && supplyX <= p2.x) {
+        const ratio = (supplyX - p1.x) / (p2.x - p1.x);
+        y = p1.y + ratio * (p2.y - p1.y);
+        break;
       }
-      let sdChart = createSDChart(sdBase.demand, sdBase.supply);
-      document.getElementById('demandUp').addEventListener('click', () => {
-        const newDemand = sdBase.demand.map(p => ({x: p.x, y: p.y + 3}));
-        sdChart.data.datasets[0].data = newDemand;
-        sdChart.update();
-      });
-      document.getElementById('supplyUp').addEventListener('click', () => {
-        const newSupply = sdBase.supply.map(p => ({x: p.x, y: p.y - 2}));
-        sdChart.data.datasets[1].data = newSupply;
-        sdChart.update();
-      });
-      document.getElementById('sdReset').addEventListener('click', () => {
-        sdChart.data.datasets[0].data = sdBase.demand;
-        sdChart.data.datasets[1].data = sdBase.supply;
-        sdChart.update();
-      });
+    }
+    if (y === null) return 'scarce';
+    if (Math.abs(y - 8) < 0.1 || Math.abs(y - 4) < 0.1) {
+      return 'ample';
+    } else {
+      return 'scarce';
+    }
+  }
 
-      // ----- Price Ceiling Chart -----
-      const ceilCtx = document.getElementById('ceilingChart').getContext('2d');
-      const ceilDemand = [{x:10,y:22},{x:20,y:20},{x:30,y:18},{x:40,y:16},{x:50,y:14},{x:60,y:12}];
-      const ceilSupply = [{x:10,y:12},{x:20,y:14},{x:30,y:16},{x:40,y:18},{x:50,y:20},{x:60,y:22}];
-      let ceilingChart = new Chart(ceilCtx, {
-        type: 'scatter',
-        data: {
-          datasets: [
-            { label: 'Demand', data: ceilDemand, showLine:true, borderColor:'#b22222', pointRadius:2 },
-            { label: 'Supply', data: ceilSupply, showLine:true, borderColor:'#2e6b2e', pointRadius:2 }
-          ]
-        },
-        options: {
-          scales: {
-            x: { title:{display:true, text:'Quantity'}, min:0, max:70 },
-            y: { title:{display:true, text:'Price'}, min:8, max:26 }
-          }
-        }
-      });
-      document.getElementById('applyCeiling').addEventListener('click', () => {
-        ceilingChart.data.datasets.push({
-          label: 'Price Ceiling (P=14)',
-          data: [{x:0, y:14}, {x:65, y:14}],
-          showLine: true,
-          borderColor: '#d97706',
-          borderDash: [6,4],
-          pointRadius: 0,
-          fill: false
-        });
-        ceilingChart.update();
-      });
-      document.getElementById('ceilingReset').addEventListener('click', () => {
-        ceilingChart.data.datasets = ceilingChart.data.datasets.filter(ds => ds.label !== 'Price Ceiling (P=14)');
-        ceilingChart.update();
-      });
+  function updateReserveRegime() {
+    currentReserveRegime = detectReserveRegime();
+    if (currentReserveRegime === 'ample') {
+      reserveRegime.textContent = 'Regime: AMPLE RESERVES – floor rate (IORB) relevant.';
+    } else {
+      reserveRegime.textContent = 'Regime: SCARCE RESERVES – OMO changes policy rate.';
+    }
+  }
 
-      // ----- Profit Maximization Chart -----
-      const profitCtx = document.getElementById('profitChart').getContext('2d');
-      const mcData = [{x:1,y:2},{x:2,y:1.5},{x:3,y:1.8},{x:4,y:2.8},{x:5,y:4.5},{x:6,y:7}];
-      const mrData = [{x:1,y:5},{x:2,y:4.5},{x:3,y:4},{x:4,y:3.5},{x:5,y:3},{x:6,y:2.5}];
-      let profitChart = new Chart(profitCtx, {
-        type: 'scatter',
-        data: {
-          datasets: [
-            { label: 'MC', data: mcData, showLine:true, borderColor:'#b45389', tension:0.3 },
-            { label: 'MR', data: mrData, showLine:true, borderColor:'#1e4b6b', tension:0.1 }
-          ]
-        },
-        options: {
-          scales: {
-            x: { title:{display:true, text:'Quantity'}, min:0, max:7 },
-            y: { title:{display:true, text:'Cost / Revenue'}, min:0, max:8 }
-          }
-        }
-      });
-      document.getElementById('highlightProfit').addEventListener('click', () => {
-        profitChart.data.datasets.push({
-          label: 'Q* (MC=MR)',
-          data: [{x:3.4, y:3.7}],
-          pointRadius: 8,
-          pointBackgroundColor: '#c2410c',
-          showLine: false
-        });
-        profitChart.update();
-      });
-      document.getElementById('profitReset').addEventListener('click', () => {
-        profitChart.data.datasets = profitChart.data.datasets.filter(ds => ds.label !== 'Q* (MC=MR)');
-        profitChart.update();
-      });
+  function shiftRS(delta, msg) {
+    reserveChart.data.datasets[1].data = reserveChart.data.datasets[1].data.map(p=>({x:p.x+delta, y:p.y}));
+    reserveChart.update();
+    reserveFactor.textContent = msg;
+    updateReserveRegime();
+  }
 
-      // ----- Lorenz Curve -----
-      const lorenzCtx = document.getElementById('lorenzChart').getContext('2d');
-      const perfectEquality = [{x:0,y:0},{x:20,y:20},{x:40,y:40},{x:60,y:60},{x:80,y:80},{x:100,y:100}];
-      const lorenzDefault = [{x:0,y:0},{x:20,y:5},{x:40,y:15},{x:60,y:30},{x:80,y:52},{x:100,y:100}];
-      let lorenzChart = new Chart(lorenzCtx, {
-        type: 'scatter',
-        data: {
-          datasets: [
-            { label: 'Perfect Equality', data: perfectEquality, showLine:true, borderColor:'#4b5563', borderDash:[4,4], pointRadius:1 },
-            { label: 'Lorenz Curve', data: lorenzDefault, showLine:true, borderColor:'#1e4b6b', tension:0.4, fill:true, backgroundColor:'rgba(30,75,107,0.1)' }
-          ]
-        },
-        options: {
-          scales: {
-            x: { title:{display:true, text:'Cumulative % of Population'}, min:0, max:100 },
-            y: { title:{display:true, text:'Cumulative % of Income'}, min:0, max:100 }
-          }
-        }
-      });
-      document.getElementById('moreInequality').addEventListener('click', () => {
-        lorenzChart.data.datasets[1].data = [{x:0,y:0},{x:20,y:3},{x:40,y:10},{x:60,y:22},{x:80,y:42},{x:100,y:100}];
-        lorenzChart.update();
-      });
-      document.getElementById('lorenzReset').addEventListener('click', () => {
-        lorenzChart.data.datasets[1].data = lorenzDefault;
-        lorenzChart.update();
-      });
+  function shiftRD(delta, msg) {
+    if (currentReserveRegime === 'ample') {
+      reserveChart.data.datasets[0].data = reserveChart.data.datasets[0].data.map(p => ({
+        x: p.x,
+        y: p.y + 0.5
+      }));
+    } else {
+      reserveChart.data.datasets[0].data = reserveChart.data.datasets[0].data.map(p => ({
+        x: p.x + 50,
+        y: p.y
+      }));
+    }
+    reserveChart.update();
+    reserveFactor.textContent = msg + (currentReserveRegime === 'ample' ? ' (horizontal shift)' : ' (rightward shift)');
+    updateReserveRegime();
+  }
 
-    })();
-  </script>
+  function resetReserve() {
+    reserveChart.data.datasets[0].data = JSON.parse(JSON.stringify(rdOrig));
+    reserveChart.data.datasets[1].data = JSON.parse(JSON.stringify(rsOrig));
+    reserveChart.update();
+    reserveFactor.textContent = '';
+    updateReserveRegime();
+  }
+
+  document.getElementById('rsRight').onclick = ()=> shiftRS(80, 'OMO purchase → RS right');
+  document.getElementById('rsLeft').onclick = ()=> shiftRS(-80, 'OMO sale → RS left');
+  document.getElementById('rdRight').onclick = ()=> shiftRD(50, 'Higher liquidity demand → RD increase');
+  document.getElementById('reserveReset').onclick = resetReserve;
+  updateReserveRegime();
+
+  // ---- PPF ----
+  const ppfCtx = document.getElementById('ppfChart').getContext('2d');
+  const ppfOuter = [100,95,82,60,30,0];
+  const ppfInner = [90,83,70,48,22,0];
+  const ppfChart = new Chart(ppfCtx, {
+    type:'line', data:{labels:['0','20','40','60','80','100'], datasets:[{label:'PPF',data:ppfOuter,borderColor:'#1e4b6b',backgroundColor:'rgba(30,75,107,0.1)',borderWidth:3,tension:0.2,pointRadius:5,fill:true}]},
+    options:{ responsive:true, scales:{ x:{title:{display:true,text:'Consumer Goods'},min:0,max:100}, y:{title:{display:true,text:'Capital Goods'},min:0,max:110} } }
+  });
+  const ppfFactor = document.getElementById('ppfFactor');
+  document.getElementById('ppfOut').onclick = ()=>{ ppfChart.data.datasets[0].data=[100,98,88,72,44,10]; ppfChart.update(); ppfFactor.textContent='Tech/capital↑ → PPF out'; };
+  document.getElementById('ppfIn').onclick = ()=>{ ppfChart.data.datasets[0].data=ppfInner; ppfChart.update(); ppfFactor.textContent='Disaster → PPF in'; };
+  document.getElementById('ppfReset').onclick = ()=>{ ppfChart.data.datasets[0].data=ppfOuter; ppfChart.update(); ppfFactor.textContent=''; };
+
+  // ---- Economic Cycle ----
+  const cycleCtx = document.getElementById('cycleChart').getContext('2d');
+  const timeLabels = ['Q1','Q2','Q3','Q4','Q5','Q6','Q7','Q8','Q9','Q10','Q11','Q12'];
+  const potentialGDP = [100,101,102,103,104,105,106,107,108,109,110,111];
+  const volatileActual = [98,97,103,108,104,100,98,101,110,113,108,105];
+  const smoothActual = volatileActual.map((actual, idx) => {
+    const potential = potentialGDP[idx];
+    const gap = actual - potential;
+    return Math.round(potential + 0.5 * gap);
+  });
+
+  const cycleChart = new Chart(cycleCtx, {
+    type:'line',
+    data:{
+      labels: timeLabels,
+      datasets: [
+        { label: 'Potential GDP (trend)', data: potentialGDP, borderColor:'#2c3e50', borderDash:[5,5], pointRadius:1, fill:false, borderWidth:2 },
+        { label: 'Actual GDP (no stabilizers)', data: volatileActual, borderColor:'#c0392b', borderWidth:2.5, tension:0.2, pointRadius:3 }
+      ]
+    },
+    options:{
+      responsive:true,
+      scales:{ y:{ title:{display:true, text:'Real GDP (index)'}, min:90, max:115 } },
+      plugins:{ title:{display:true, text:'Business Cycle with Upward Trend'} }
+    }
+  });
+  const cycleFactor = document.getElementById('cycleFactor');
+  document.getElementById('applyStabilizer').onclick = ()=>{
+    cycleChart.data.datasets[1].data = smoothActual;
+    cycleChart.data.datasets[1].label = 'Actual GDP (with stabilizers)';
+    cycleChart.update();
+    cycleFactor.textContent = 'Automatic stabilizers reduce the amplitude of fluctuations, but output gaps remain positive or negative as before.';
+  };
+  document.getElementById('resetCycle').onclick = ()=>{
+    cycleChart.data.datasets[1].data = volatileActual;
+    cycleChart.data.datasets[1].label = 'Actual GDP (no stabilizers)';
+    cycleChart.update();
+    cycleFactor.textContent = '';
+  };
+
+  // ================= POLICY CHAIN =================
+  const gapSelect = document.getElementById('gapSelect');
+  const policySelectionDiv = document.getElementById('policySelection');
+  const policySelect = document.getElementById('policySelect');
+  const applyPolicyBtn = document.getElementById('applyPolicy');
+  const autoAdjustBtn = document.getElementById('autoAdjustBtn');
+  const chainDisplay = document.getElementById('policyChainDisplay');
+  const resetChainBtn = document.getElementById('resetChainBtn');
+
+  gapSelect.addEventListener('change', function() {
+    if (this.value !== 'none') {
+      policySelectionDiv.style.display = 'block';
+    } else {
+      policySelectionDiv.style.display = 'none';
+    }
+  });
+
+  function setChainText(text) {
+    chainDisplay.innerHTML = `<span class="chain-arrows">${text}</span>`;
+  }
+
+  applyPolicyBtn.addEventListener('click', function() {
+    const gap = gapSelect.value;
+    const policy = policySelect.value;
+    if (gap === 'none' || policy === '') {
+      setChainText('⚠️ Please select both a gap and a policy.');
+      return;
+    }
+    let chain = '', adDelta = 0;
+    if (gap === 'recessionary') {
+      if (policy === 'fiscal_expansionary') { chain = 'Recessionary Gap → Expansionary Fiscal → G↑ (or T↓) → AD → (right) → GDP↑'; adDelta = 150; }
+      else if (policy === 'fiscal_contractionary') { chain = '⚠️ Contractionary fiscal in recession worsens gap.'; adDelta = -150; }
+      else if (policy === 'monetary_expansionary') { chain = 'Recessionary Gap → Expansionary Monetary → MS↑ → r↓ → I↑,C↑ → AD → (right)'; adDelta = 150; }
+      else if (policy === 'monetary_contractionary') { chain = '⚠️ Contractionary monetary in recession deepens recession.'; adDelta = -150; }
+    } else if (gap === 'inflationary') {
+      if (policy === 'fiscal_contractionary') { chain = 'Inflationary Gap → Contractionary Fiscal → G↓ (or T↑) → AD ←'; adDelta = -150; }
+      else if (policy === 'fiscal_expansionary') { chain = '⚠️ Expansionary fiscal adds fuel → more inflation.'; adDelta = 150; }
+      else if (policy === 'monetary_contractionary') { chain = 'Inflationary Gap → Contractionary Monetary → MS↓ → r↑ → I↓ → AD ←'; adDelta = -150; }
+      else if (policy === 'monetary_expansionary') { chain = '⚠️ Expansionary monetary worsens inflation.'; adDelta = 150; }
+    }
+    setChainText(chain);
+    if (adDelta !== 0) {
+      adasChart.data.datasets[0].data = adasChart.data.datasets[0].data.map(p=>({x:p.x+adDelta, y:p.y}));
+      adasChart.update();
+      adasFactor.textContent = chain.split('→').pop().trim();
+    }
+  });
+
+  autoAdjustBtn.addEventListener('click', function() {
+    const gap = gapSelect.value;
+    if (gap === 'none') { setChainText('⚠️ Select a gap first.'); return; }
+    let srasDelta = 0, chain = '';
+    if (gap === 'recessionary') {
+      chain = 'Long‑run adjustment: Unemployment → wages fall → SRAS → (right) → back to full employment.';
+      srasDelta = 200;
+    } else if (gap === 'inflationary') {
+      chain = 'Long‑run adjustment: Low unemployment → wages rise → SRAS ← (left) → back to full employment.';
+      srasDelta = -200;
+    }
+    setChainText(chain);
+    if (srasDelta !== 0) {
+      adasChart.data.datasets[1].data = adasChart.data.datasets[1].data.map(p=>({x:p.x+srasDelta, y:p.y}));
+      adasChart.update();
+      adasFactor.textContent = 'SRAS shifted (automatic adjustment)';
+    }
+  });
+
+  resetChainBtn.addEventListener('click', function() {
+    resetADAS();
+    setChainText('⬅️ Select a gap and policy to see the transmission chain.');
+    gapSelect.value = 'none';
+    policySelect.value = '';
+    policySelectionDiv.style.display = 'none';
+  });
+
+});
+</script>
 </body>
 </html>
